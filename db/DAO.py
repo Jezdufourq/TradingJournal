@@ -198,6 +198,12 @@ class Datastore:
                 cursor.close()
                 return success
 
+        def getClosedAssets(self):
+            """
+            Gets all currently closed assets from database;
+            :return:
+            """
+
         def closeDatastore(self):
             self.db.close()
 
