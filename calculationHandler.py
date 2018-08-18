@@ -231,16 +231,16 @@ class portfolioMetric(object):
         else:
             pass
 
-    def potfolioExposure(self, entryPrice, exitPrice, targetPrice, stopLoss):
-        # The portfolio exposure is the difference in the long and the short positions
-        if (stopLoss > entryPrice):
-            # This is a short position
-        elif (stopLoss < entryPrice):
-            # This is a long position
-        else:
-            logging.exception("unknown exception")
-            pass
-        return
+    # def potfolioExposure(self, entryPrice, exitPrice, targetPrice, stopLoss):
+    #     # The portfolio exposure is the difference in the long and the short positions
+    #     if (stopLoss > entryPrice):
+    #         # This is a short position
+    #     elif(stopLoss < entryPrice):
+    #         # This is a long position
+    #     else:
+    #         logging.exception("unknown exception")
+    #         pass
+    #     return
 
 
 
