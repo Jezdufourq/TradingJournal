@@ -5,6 +5,7 @@ from db.instruments import Instrument, Asset
 class Datastore:
     class __Datastore:
         def __init__(self, dbpath):
+            print("dbpath = ", dbpath)
             if os.path.isfile(dbpath):
                 self.db = sqlite3.connect('tradingJournal.sqlite')
                 self.db.row_factory = sqlite3.Row
@@ -38,6 +39,7 @@ class Datastore:
                     commons        TEXT,
                     marginRate     REAL,
                     exitDate       REAL,
+                    exitPrice      REAL,
                     FOREIGN KEY(instrumentCode) REFERENCES instruments(code)
                 )
             ''')
@@ -63,13 +65,17 @@ class Datastore:
                 returnCode = cursor.lastrowid
             else:
                 print("Updating existing instrument: ", instrument.code)
-                cursor.execute('''
-                        UPDATE instruments SET 
-                        currentPrice =?, 
-                        lastUpdate =? 
-                        WHERE code =? ''', (instrument.currentPrice, instrument.lastUpdate, instrument.code,)
-                       )
-                returnCode = cursor.lastrowid
+                if instrument.currentPrice == 0:
+                    print("Did not update instrument with 0 price.")
+                    returnCode = -1
+                else:
+                    cursor.execute('''
+                            UPDATE instruments SET 
+                            currentPrice =?, 
+                            lastUpdate =? 
+                            WHERE code =? ''', (instrument.currentPrice, instrument.lastUpdate, instrument.code,)
+                           )
+                    returnCode = cursor.lastrowid
             self.db.commit()
             cursor.close()
             return returnCode
@@ -127,13 +133,14 @@ class Datastore:
                                            fundamentals,
                                            commons,
                                            marginRate,
-                                           exitDate)
-                        VALUES (?,?,?,?,?,?,?,?,?,?,?)''',
+                                           exitDate,
+                                           exitPrice)
+                        VALUES (?,?,?,?,?,?,?,?,?,?,?,?)''',
                         (theAsset.instrumentCode, theAsset.entryDate,
                          theAsset.entryPrice, theAsset.targetPrice,
                          theAsset.stopLossPrice, theAsset.qty, theAsset.technicals,
                          theAsset.fundamentals, theAsset.commons, theAsset.marginRate,
-                         theAsset.exitDate))
+                         theAsset.exitDate, theAsset.exitPrice))
                 id = cursor.lastrowid
             else:
                 print("Updating existing asset: ", theAsset.assetId)
@@ -148,12 +155,13 @@ class Datastore:
                         fundamentals =?,
                         commons =?,
                         marginRate =?,
-                        exitDate =?
+                        exitDate =?,
+                        exitPrice =?
                         WHERE assetId = ?''', (theAsset.entryDate,
                          theAsset.entryPrice, theAsset.targetPrice,
                          theAsset.stopLossPrice, theAsset.qty, theAsset.technicals,
                          theAsset.fundamentals, theAsset.commons, theAsset.marginRate,
-                         theAsset.exitDate, theAsset.assetId)
+                         theAsset.exitDate, theAsset.exitPrice, theAsset.assetId)
                        )
                 id = theAsset.assetId
             self.db.commit()
@@ -203,6 +211,13 @@ class Datastore:
             Gets all currently closed assets from database;
             :return:
             """
+            cursor = self.db.cursor()
+            cursor.execute('''SELECT * FROM assets WHERE exitDate > 0''')
+            closedAssets = []
+            for asset in cursor.fetchall():
+                closedAssets.append(dict(asset))
+            return closedAssets
+
 
         def closeDatastore(self):
             self.db.close()
@@ -212,7 +227,7 @@ class Datastore:
         if not Datastore.instance:
             Datastore.instance = Datastore.__Datastore(dbpath)
         else:
-            Datastore.instance.val = dbpathdata = cursor.fetchone()
+            Datastore.instance.val = dbpath
 
     def __getattr__(self, name):
         return getattr(self.instance, name)
