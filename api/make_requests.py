@@ -87,4 +87,5 @@ def call_request(endpoint_url, header_data, query_data):
     return resp.json()
 
 instrument_data = get_instrument_data()
-print(get_account_value())
+
+print(instrument_data)

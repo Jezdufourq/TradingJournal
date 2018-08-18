@@ -164,43 +164,83 @@ class assetLive(object):
         """
         return ((currentPrice - entryPrice) / (entryPrice))
 
-# # OTHER THINGS TO CALCULATE
-# # - WIN RATE
-# # AVERAGE -RISK TO REWARD RATIO
-# # CURRENT EXPECTANCY
-# # MAXIMUM CONSECUTIVE LOSS
-# # MAXIMUM DRAWDOWN
-# # NUMBER OF TRADES
-# # PROFITABILITY
-# # AVERAGE HOLDING TIME
+class portfolioMetric(object):
+    """
+    This class calculates metrics of the portfolio after closing positions
+    """
+    postionValue = {}
 
-# # PROJECT SHARPE RATIO
-# # CURRENT SHARPE RATIO
+    def winRate(self, closedCount, exitPrice, entryPrice, stopLoss):
+        """
+        Inputs:
+         - closedCount (float) - the amount of closed positions currently
+         - exitPrice (float) - the price at which the user has exited the trade
+         - entryPrice (float) - user entered, price at which entered
+         - stopLoss (float) - stopLoss (float) - user entered, maximum value to loose
+        Output:
+         - winRate (float) - The percentage of winning trades
+        """
+        count = 0
+        if (stopLoss > entryPrice):
+            # This is a short position
+            if(exitPrice < entryPrice):
+                count += 1
+            elif(exitPrice > entryPrice):
+                count -= 1
+            else:
+                logging.exception("Unknown position")
+        elif(stopLoss < entryPrice):
+            # This is a long position
+            if(exitPrice > entryPrice):
+                count += 1
+            elif(exitPrice < entryPrice):
+                count -= 1
+            else:
+                logging.exception("Unknown position")
+        else:
+            logging.exception("unknown exception")
 
-# class portfolioMetric(object):
-#
-#     """
-#         Inputs:
-#          - entryPrice (float) - user entered, price at which entered
-#          - targetPrice (float) - user entered, maximum value to win
-#          - assetQty (float) - user entered, amount of contracts
-#         Output:
-#          - targetPercent (float) - Calculated market value in percent of the target value
-#     """
-#     def winRate(self, closedCount, ):
-#
-#     def averageRRR(self, ):
-#
-#     def numberTrades(self, closedCount):
-#         return closedCount
-#
-#     def averageHoldingtime(self, closedPos, startDate, endDate):
-#         if (closedPos):
-#             return startDate - endDate
-#         else:
-#             pass
-#     def potfolioExposure(self,):
-#         pass
+        return ((count / closedCount) * 100)
+
+    # TO DO - IMPLEMENTATION
+    def averageRRR(self, closedCount, entryPrice, stopLoss, targetPrice):
+        riskReward = abs((targetPrice - entryPrice)/(stopLoss - entryPrice))
+
+
+    def numberTrades(self, closedCount):
+        """
+        Inputs:
+         - closedCount (float) - The amount of closed positions (based on exit date)
+        Output:
+         - numberTrades (float) - The number of trades made
+        """
+        return closedCount
+
+    def averageHoldingtime(self, closedPos, startDate, endDate):
+        """
+        Inputs:
+         - closedCount (float) - the amount of closed positions currently
+         - exitPrice (float) - the price at which the user has exited the trade
+         - entryPrice (float) - user entered, price at which entered
+         - stopLoss (float) - stopLoss (float) - user entered, maximum value to loose
+        Output:
+         - winRate (float) - The percentage of winning trades
+        """
+        if (closedPos):
+            return startDate - endDate
+        else:
+            pass
+
+    def potfolioExposure(self, entryPrice, exitPrice, targetPrice, stopLoss):
+        # The portfolio exposure is the difference in the long and the short positions
+        if (stopLoss > entryPrice):
+            # This is a short position
+        elif (stopLoss < entryPrice):
+            # This is a long position
+        else:
+            logging.exception("unknown exception")
+            pass
+        return
 
 
 
