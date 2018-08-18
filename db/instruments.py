@@ -39,6 +39,7 @@ class Asset:
     commons       = None
     marginRate    = None
     exitDate      = None
+    exitPrice     = None
 
     def __init__(self, assetParams, saveOnCreate=True):
         # check for default values and build object.
@@ -67,6 +68,8 @@ class Asset:
             self.marginRate = assetParams["marginRate"]
         if "exitDate" in assetParams:
             self.exitData = assetParams["exitDate"]
+        if "exitPrice" in assetParams:
+            self.exitPrice = assetParams["exitPrice"]
 
 
         #check for save on create and insert/update
