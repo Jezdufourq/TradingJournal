@@ -128,7 +128,6 @@ marketVal_input=Entry(calculation_frame,textvariable=marketVal)
 marketVal_input.grid(row=6,column=4,padx=10,pady=10)
 marketVal_input.configure(state="disable")
 
-
 # target Value
 targetValLabel=Label(calculation_frame,text="targetVal:")
 targetValLabel.grid(row=7,column=3,padx=10,pady=10)

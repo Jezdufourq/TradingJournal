@@ -79,6 +79,16 @@ def get_instrument_margin(instrument_code):
 def get_instrument_type(instrument_code):
     return instrument_data[instrument_code]['type']
 
+def get_all_pricing():
+    keys = instrument_data.keys()
+    
+    result = {}
+
+    for instrument_code in keys:
+        result[instrument_code] = get_price_and_spread(instrument_code)
+
+    return result
+
 def call_request(endpoint_url, header_data, query_data):
     resp = requests.get(base_url + endpoint_url, headers = header_data, params=query_data)
     if resp.status_code != 200:
@@ -87,4 +97,3 @@ def call_request(endpoint_url, header_data, query_data):
     return resp.json()
 
 instrument_data = get_instrument_data()
-print(get_account_value())
