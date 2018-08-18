@@ -71,7 +71,7 @@ comment_input.grid(row=8,column=1,columnspan=2,padx=10,pady=10)
 
 # calculation frame
 calculation_frame=LabelFrame(root,text="Calculation Output")
-calculation_frame.grid(row=0,column=3,rowspan=7,columnspan=2,ipady=20,padx=5)
+calculation_frame.grid(row=0,column=3,rowspan=8,columnspan=2,ipady=20,padx=5)
 
 
 # margin entry
@@ -134,7 +134,34 @@ targetValLabel.grid(row=7,column=3,padx=10,pady=10)
 targetVal=StringVar()
 targetVal_input=Entry(calculation_frame,textvariable=targetVal)
 targetVal_input.grid(row=7,column=4,padx=5,pady=5)
+
+percentLabel=Label(calculation_frame,text="%")
+percentLabel.grid(row=7,column=5)
+
+tpercentVal=StringVar()
+tpercentVal_input=Entry(calculation_frame,textvariable=tpercentVal)
+tpercentVal_input.grid(row=7,column=6,ipadx=5,padx=5)
+tpercentVal_input.configure(state="disable")
 targetVal_input.configure(state="disable")
+
+# stop loss value
+stoplossValLabel=Label(calculation_frame,text="Stop Loss Value:")
+stoplossValLabel.grid(row=8,column=3,padx=10,pady=10)
+stoplossVal=StringVar()
+percentVal=StringVar()
+stoplossVal_input=Entry(calculation_frame,textvariable=stoplossVal)
+stoplossVal_input.grid(row=8,column=4,padx=5,pady=5)
+
+percentLabel2=Label(calculation_frame,text="%")
+percentLabel2.grid(row=8,column=5)
+
+percentVal_input=Entry(calculation_frame,textvariable=percentVal)
+percentVal_input.grid(row=8,column=6,ipadx=5,padx=5)
+
+stoplossVal_input.configure(state="disable")
+percentVal_input.configure(state="disable")
+
+
 
 # creating new windows
 def new_window():
@@ -154,14 +181,11 @@ dashboard_button.grid(row=8,column=0,ipadx=20,padx=10,pady=5,columnspan=2)
 # entryTicket_button.grid(row=8,column=0,ipadx=20,padx=10,pady=5)
 
 entry_button=Button(root,text="Entry",command=enable_calcwidget)
-entry_button.grid(row=7,column=4,ipadx=50,padx=5,pady=5)
+entry_button.grid(row=7,column=3,ipadx=100,padx=5,pady=15,columnspan=2)
 
 export_button=Button(root,text="Export")
-export_button.grid(row=8,column=4,ipadx=50,padx=5)
+export_button.grid(row=8,column=3,ipadx=100,padx=5,columnspan=2)
 
-# disabling frame until button is pressed
-# for child in calculation_frame.winfo_children():
-#     child.configure(state="disable")
 
 
 # it's written like this to escape from a bug that occurs on OSX.

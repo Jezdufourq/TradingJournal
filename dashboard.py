@@ -55,6 +55,10 @@ def create_dashboard(root):
     upd_value.grid(row=4, column=1)
     upp_value.grid(row=5, column=1)
 
+    # delete button
+    delete=Button(current_frame,text="Exit")
+    delete.grid(row=20,column=0,columnspan=2,pady=20,ipadx=20)
+
     #
     # Table of values
     #
