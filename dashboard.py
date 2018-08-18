@@ -1,6 +1,8 @@
 from tkinter import *
 import tkinter.ttk as ttk
+import tkinter.simpledialog
 import matplotlib
+import frontend_script
 
 matplotlib.use("TkAgg")
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
@@ -8,42 +10,45 @@ from matplotlib.figure import Figure
 
 
 def click_add():
-    pass
+    """
+        Called when "add" button is clicked.
+        Opens a new window from frontend_script.py
+    """
+    # TODO: open new window, pass Toplevel as parameter
+    #new_window = Toplevel(root)
+    #frontend_script.create_window(new_window)
 
 
 def close():
+    """
+        Called when "close" button is clicked.
+        Shows a dialog where user can input a price and push either "cancel" or "ok"
+        When price is entered and "ok" is clicked, the selected row will be deleted.
+    """
+    # Retrieve data from selected row
     selected_row = tree.focus()
     print(tree.item(selected_row))
 
-    dialog = Toplevel(root)
-    dialog.title("close")
+    # prompt dialog
+    price = tkinter.simpledialog.askinteger("Close", "Price", parent=root)
 
-    price_label = Label(dialog, text="Price")
-    price_label.grid(row=0, column=0)
+    # retrieve input from dialog
+    if price is not None:   # when "ok" is clicked
+        print(price)
+        # delete selected row
+        tree.delete(selected_row)
+    else:   # when "cancel" is clicked
+        print("cancelled")
 
-    price_entry = Entry(dialog)
-    price_entry.grid(row=0, column=1)
-
-    buttons_frame = Frame(dialog)
-    buttons_frame.grid(row=1, column=0, columnspan=2)
-
-    ok_button = Button(buttons_frame, text="ok", command=close_ok)
-    ok_button.pack(side=RIGHT)
-
-    cancel_button = Button(buttons_frame, text="cancel", command=dialog.destroy)
-    cancel_button.pack(side=RIGHT)
-
-
-def close_ok():
-    pass
+    # TODO: manage entered price
 
 
 root = Tk()
 root.title("Dashboard")
 
-#
-# graph canvas
-#
+"""
+    graph canvas
+"""
 f = Figure(figsize=(6, 2), dpi=100)
 a = f.add_subplot(111)
 a.plot([1, 2, 3, 4, 5, 6, 7, 8], [5, 3, 6, 5, 2, 1, 4, 1])
@@ -52,9 +57,9 @@ graph_canvas = FigureCanvasTkAgg(f, root)
 graph_canvas.draw()
 graph_canvas.get_tk_widget().grid(row=0, column=0)
 
-#
-# "values" frame & label
-#
+"""
+    "values" frame & label
+"""
 values_frame = Frame(root, borderwidth=1)
 values_frame.config(highlightbackground="black")
 values_frame.grid(row=0, column=1, sticky=N, pady=(60, 0), padx=(0, 50))
@@ -80,16 +85,16 @@ aht_value = Label(values_frame, text=0)
 exposure_value.grid(row=0, column=1)
 rrr_value.grid(row=1, column=1)
 trades_value.grid(row=2, column=1)
+win_rate_value.grid(row=3, column=1)
 aht_value.grid(row=4, column=1)
 
 # delete button
-delete=Button(values_frame,text="Exit")
+delete = Button(values_frame,text="Exit")
 delete.grid(row=20,column=0,columnspan=2,pady=20,ipadx=20)
 
-#
-# Table of values
-#
-
+"""
+    Table of values
+"""
 table_frame = Frame(root)
 table_frame.grid(row=1, column=0, columnspan=2, sticky=W+E)
 
@@ -106,24 +111,25 @@ for heading in headings:
     tree.heading(column_index, text=heading)
     column_index += 1
 
-tree.insert("", "end", values=("2017/5/1", "食費", 3500, "食費", 3500, "食費", 3500, "食費"))
-tree.insert("", "end", values=("2017/5/2", "食費", 3500, "食費", 3500, "食費", 3500, "食費"))
-tree.insert("", "end", values=("2017/5/3", "食費", 3500, "食費", 3500, "食費", 3500, "食費"))
-tree.insert("", "end", values=("2017/5/4", "食費", 3500, "食費", 3500, "食費", 3500, "食費"))
-tree.insert("", "end", values=("2017/5/5", "食費", 3500, "食費", 3500, "食費", 3500, "食費"))
-tree.insert("", "end", values=("2017/5/6", "食費", 3500, "食費", 3500, "食費", 3500, "食費"))
-tree.insert("", "end", values=("2017/5/7", "食費", 3500, "食費", 3500, "食費", 3500, "食費"))
-tree.insert("", "end", values=("2017/5/8", "食費", 3500, "食費", 3500, "食費", 3500, "食費"))
-tree.insert("", "end", values=("2017/5/9", "食費", 3500, "食費", 3500, "食費", 3500, "食費"))
-tree.insert("", "end", values=("2017/5/0", "食費", 3500, "食費", 3500, "食費", 3500, "食費"))
-tree.insert("", "end", values=("2017/5/1", "食費", 3500, "食費", 3500, "食費", 3500, "食費"))
-tree.insert("", "end", values=("2017/5/2", "食費", 3500, "食費", 3500, "食費", 3500, "食費"))
-tree.insert("", "end", values=("2017/5/3", "食費", 3500, "食費", 3500, "食費", 3500, "食費"))
-tree.insert("", "end", values=("2017/5/4", "食費", 3500, "食費", 3500, "食費", 3500, "食費"))
-tree.insert("", "end", values=("2017/5/5", "食費", 3500, "食費", 3500, "食費", 3500, "食費"))
-tree.insert("", "end", values=("2017/5/6", "食費", 3500, "食費", 3500, "食費", 3500, "食費"))
-tree.insert("", "end", values=("2017/5/7", "食費", 3500, "食費", 3500, "食費", 3500, "食費"))
-tree.insert("", "end", values=("2017/5/8", "食費", 3500, "食費", 3500, "食費", 3500, "食費"))
+# placeholder values
+tree.insert("", "end", values=("2017/5/1", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
+tree.insert("", "end", values=("2017/5/2", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
+tree.insert("", "end", values=("2017/5/3", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
+tree.insert("", "end", values=("2017/5/4", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
+tree.insert("", "end", values=("2017/5/5", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
+tree.insert("", "end", values=("2017/5/6", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
+tree.insert("", "end", values=("2017/5/7", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
+tree.insert("", "end", values=("2017/5/8", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
+tree.insert("", "end", values=("2017/5/9", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
+tree.insert("", "end", values=("2017/5/0", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
+tree.insert("", "end", values=("2017/5/1", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
+tree.insert("", "end", values=("2017/5/2", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
+tree.insert("", "end", values=("2017/5/3", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
+tree.insert("", "end", values=("2017/5/4", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
+tree.insert("", "end", values=("2017/5/5", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
+tree.insert("", "end", values=("2017/5/6", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
+tree.insert("", "end", values=("2017/5/7", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
+tree.insert("", "end", values=("2017/5/8", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
 
 tree.pack(side=LEFT)
 
