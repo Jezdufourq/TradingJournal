@@ -1,4 +1,5 @@
 from tkinter import *
+import dashboard
 
 root=Tk()
 root.wm_title("Entry Ticket")
@@ -117,8 +118,7 @@ targetVal_input.grid(row=6,column=4,padx=5,pady=5)
 # creating new windows
 def new_window():
     new_win= Toplevel(root)
-    display= Label(new_win,text="Testing")
-    display.pack();
+    dashboard.create_dashboard(new_win)
 
 # buttons
 dashboard_button= Button(root,text="Dashboard",command=new_window)
@@ -133,5 +133,12 @@ entry_button.grid(row=7,column=4,ipadx=50,padx=5)
 export_button=Button(root,text="Export")
 export_button.grid(row=8,column=4,ipadx=50,padx=5)
 
-root.mainloop()
+
+# it's written like this to escape from a bug that occurs on OSX.
+while True:
+    try:
+        root.mainloop()
+        break
+    except UnicodeDecodeError:
+        pass
 
