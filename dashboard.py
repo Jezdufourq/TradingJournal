@@ -7,7 +7,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolb
 from matplotlib.figure import Figure
 
 
-def add_func():
+def click_add():
     pass
 
 
@@ -15,8 +15,31 @@ def close():
     selected_row = tree.focus()
     print(tree.item(selected_row))
 
+    dialog = Toplevel(root)
+    dialog.title("close")
+
+    price_label = Label(dialog, text="Price")
+    price_label.grid(row=0, column=0)
+
+    price_entry = Entry(dialog)
+    price_entry.grid(row=0, column=1)
+
+    buttons_frame = Frame(dialog)
+    buttons_frame.grid(row=1, column=0, columnspan=2)
+
+    ok_button = Button(buttons_frame, text="ok", command=close_ok)
+    ok_button.pack(side=RIGHT)
+
+    cancel_button = Button(buttons_frame, text="cancel", command=dialog.destroy)
+    cancel_button.pack(side=RIGHT)
+
+
+def close_ok():
+    pass
+
 
 root = Tk()
+root.title("Dashboard")
 
 #
 # graph canvas
@@ -110,7 +133,7 @@ button_frame.grid(row=2, column=1)
 close_button = Button(button_frame, text="Close", padx=10, pady=5, command=close)
 close_button.pack(side=LEFT)
 
-add_button = Button(button_frame, text="Add", padx=10, pady=5, command=add_func)
+add_button = Button(button_frame, text="Add", padx=10, pady=5, command=click_add)
 add_button.pack(side=LEFT)
 
 
