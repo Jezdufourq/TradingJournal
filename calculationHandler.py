@@ -1,9 +1,7 @@
 import numpy as nump
 import tkinter as tk
 import sqlite3 as sq
-import statistics as stats
-import pyfolio as pyf
-import math as mt
+import logging
 
 """
 Revision: 1.0
@@ -20,9 +18,9 @@ entryCalculation, assetLive and portfolioMetric. Each of these classes are detai
 
 class entryCalculation(object):
     # This class calculates the entry position metrics for the entry ticket.
-
-    def __init__(self, calcRRR, calcMargin):
-        pass
+    #
+    # def __init__(self, calcRRR, calcMargin):
+    #     pass
 
     """
         Inputs:
@@ -33,7 +31,16 @@ class entryCalculation(object):
          - calcRRR (int) - Calculated Risk Reward Value
     """
     def calcRRR(self, entryPrice, targetPrice, stopLoss):
-        return abs((targetPrice - entryPrice)/(stopLoss - entryPrice))
+        try:
+            return abs((targetPrice - entryPrice)/(stopLoss - entryPrice))
+
+        except ZeroDivisionError as error:
+            # Output expected ZeroDivisionErrors.
+            logging.error(error)
+
+        except Exception as exception:
+            # Output unexpected Exceptions.
+            logging.exception("unknown exception")
 
     """
         Inputs:
@@ -76,7 +83,16 @@ class entryCalculation(object):
          - stoplossPercent (float) - Calculated market value in percent of the stop loss
     """
     def stoplossPercent(self, entryPrice, stopLoss, assetQty):
-        return abs((((entryPrice - stopLoss) * assetQty) / (entryPrice * assetQty)) * 100)
+        try:
+            return abs((((entryPrice - stopLoss) * assetQty) / (entryPrice * assetQty)) * 100)
+
+        except ZeroDivisionError as error:
+            # Output expected ZeroDivisionErrors.
+            logging.error(error)
+
+        except Exception as exception:
+            # Output unexpected Exceptions.
+            logging.exception("unknown exception")
 
     """
         Inputs:
@@ -101,47 +117,47 @@ class entryCalculation(object):
         return abs((((targetPrice - entryPrice) * assetQty) / (entryPrice * assetQty)) * 100)
 pass
 
-class assetLive(object):
-    # Initial variables
-    def __init__(self):
-        pass
-    
-    def livePLval(self, entryPrice, currentPrice):
-        return (currentPrice - entryPrice)
-    
-    def livePLpercent(self, entryPrice, currentPrice):
-        return ((currentPrice - entryPrice) / (entryPrice))
-
-# OTHER THINGS TO CALCULATE
-# - WIN RATE
-# AVERAGE -RISK TO REWARD RATIO
-# CURRENT EXPECTANCY
-# MAXIMUM CONSECUTIVE LOSS
-# MAXIMUM DRAWDOWN
-# NUMBER OF TRADES
-# PROFITABILITY
-# AVERAGE HOLDING TIME
-
-
-# PROJECT SHARPE RATIO
-# CURRENT SHARPE RATIO
-
-class portfolioMetric(object):
-
-    def winRate(self, closedCount, ):
-
-    def averageRRR(self, ):
-
-    def numberTrades(self, closedCount):
-        return closedCount
-
-    def averageHoldingtime(self, closedPos, startDate, endDate):
-        if (closedPos):
-            return startDate - endDate
-        else:
-            pass
-    def potfolioExposure(self,):
-        pass
+# class assetLive(object):
+#     # Initial variables
+#     def __init__(self):
+#         pass
+#
+#     def livePLval(self, entryPrice, currentPrice):
+#         return (currentPrice - entryPrice)
+#
+#     def livePLpercent(self, entryPrice, currentPrice):
+#         return ((currentPrice - entryPrice) / (entryPrice))
+#
+# # OTHER THINGS TO CALCULATE
+# # - WIN RATE
+# # AVERAGE -RISK TO REWARD RATIO
+# # CURRENT EXPECTANCY
+# # MAXIMUM CONSECUTIVE LOSS
+# # MAXIMUM DRAWDOWN
+# # NUMBER OF TRADES
+# # PROFITABILITY
+# # AVERAGE HOLDING TIME
+#
+#
+# # PROJECT SHARPE RATIO
+# # CURRENT SHARPE RATIO
+#
+# class portfolioMetric(object):
+#
+#     def winRate(self, closedCount, ):
+#
+#     def averageRRR(self, ):
+#
+#     def numberTrades(self, closedCount):
+#         return closedCount
+#
+#     def averageHoldingtime(self, closedPos, startDate, endDate):
+#         if (closedPos):
+#             return startDate - endDate
+#         else:
+#             pass
+#     def potfolioExposure(self,):
+#         pass
 
 
 
