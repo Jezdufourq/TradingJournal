@@ -1,10 +1,14 @@
 from tkinter import *
-import tkinter.ttk as ttk
 import matplotlib
 
 matplotlib.use("TkAgg")
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
 from matplotlib.figure import Figure
+
+
+def on_frame_configure(canvas):
+    '''Reset the scroll region to encompass the inner frame'''
+    canvas.configure(scrollregion=canvas.bbox("all"))
 
 
 def create_dashboard(root):
@@ -62,30 +66,37 @@ def create_dashboard(root):
     #
     # Table of values
     #
-    tree = ttk.Treeview(root)
 
-    tree["columns"] = (1, 2, 3, 4, 5, 6, 7, 8)
-    tree["show"] = "headings"
+    canvas_frame = Frame(root)
+    canvas_frame.grid(row=1, column=0, columnspan=2, sticky=W+E)
 
-    tree.column(1, width=30)
-    tree.column(2, width=30)
-    tree.column(3, width=30)
-    tree.column(4, width=30)
-    tree.column(5, width=30)
-    tree.column(6, width=30)
-    tree.column(7, width=30)
-    tree.column(8, width=30)
+    canvas = Canvas(canvas_frame, width=830)
+    table_frame = Frame(canvas)
+    scrollbar = Scrollbar(canvas_frame, orient="vertical", command=canvas.yview)
+    canvas.configure(yscrollcommand=scrollbar.set)
 
-    tree.heading(1, text="Date")
-    tree.heading(2, text="Ticker")
-    tree.heading(3, text="Mkt Value")
-    tree.heading(4, text="Entry Price")
-    tree.heading(5, text="Current Price")
-    tree.heading(6, text="P/L ($)")
-    tree.heading(7, text="P/L (%)")
-    tree.heading(8, text="Live Risk")
+    scrollbar.pack(side=RIGHT, fill="y")
+    canvas.pack(side=LEFT, fill=BOTH, expand=True)
+    canvas.create_window((0, 0), window=table_frame, anchor=NW)
+
+    table_frame.bind("<Configure>", lambda event, canvas=canvas: on_frame_configure(canvas))
+
+    headings = ["Date", "Ticker", "Mkt Value", "Entry Price", "Current Price", "P/L ($)", "P/L (%)", "Live Risk"]
+
+    column_count = 0
+
+    for heading in headings:
+        column = Entry(table_frame, width=10, relief="groove")
+        column.insert(END, heading)
+        column.config(state="readonly")
+        column.grid(row=0, column=column_count, padx=0, pady=0)
+        column_count += 1
+
+    for j in range(20):
+        for i in range(len(headings)):
+            entry = Entry(table_frame, width=10, relief="groove")
+            entry.grid(row=j+1, column=i, padx=0, pady=0)
 
     # TODO: use for loop to insert values to the table from sql queries?
 
-    tree.grid(row=1, column=0, columnspan=2, sticky=W + E)
 

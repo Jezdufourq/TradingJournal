@@ -1,5 +1,8 @@
 from tkinter import *
 import dashboard
+import dummy
+from tkinter import messagebox
+
 
 root=Tk()
 root.wm_title("Entry Ticket")
@@ -161,7 +164,10 @@ percentVal_input.grid(row=8,column=6,ipadx=5,padx=5)
 stoplossVal_input.configure(state="disable")
 percentVal_input.configure(state="disable")
 
-
+# Testing and manipulating inputs
+# a=entryPrice.get()
+# b=targetPrice.get()
+# print(dummy.sum(a,b))
 
 # creating new windows
 def new_window():
@@ -170,8 +176,25 @@ def new_window():
 
 # enabling frame
 def enable_calcwidget():
-    for child in calculation_frame.winfo_children():
-        child.configure(state="normal")
+    #testing
+    try:
+        entrystr=float(entryPrice.get())
+        targetstr=float(targetPrice.get())
+        slstr=float(stopLoss.get())
+        qtystr=float(qty.get())
+
+    except ValueError:
+        messagebox.showinfo("Error", "Please enter a float/integer")
+    else:
+        for child in calculation_frame.winfo_children():
+            child.configure(state="normal")
+        margin_input.delete(0, END)
+        margin_input.insert(0,dummy.sum(entryPrice.get()))
+        print(type(entrystr))
+        print(type(targetstr))
+        print(type(slstr))
+        print(type(qtystr))
+
 
 # buttons
 dashboard_button= Button(root,text="Dashboard",command=new_window)
@@ -187,7 +210,7 @@ export_button=Button(root,text="Export")
 export_button.grid(row=8,column=3,ipadx=100,padx=5,columnspan=2)
 
 
-
+# print(dummy.sum(1,3))
 # it's written like this to escape from a bug that occurs on OSX.
 while True:
     try:
