@@ -143,18 +143,26 @@ class entryCalculation(object):
             return((entryPrice - currentPrice) * assetQty) / (assetQty * entryPrice)
 pass
 
+class assetLive(object):
+    def livePLval(self, entryPrice, currentPrice):
+        """
+        Inputs:
+         - entryPrice (float) - user entered, price at which entered
+         - currentPrice (float) - current price off the asset
+        Output:
+         - livePLval (float) - calculates the live PL value in dollars
+        """
+        return (currentPrice - entryPrice)
 
-
-# class assetLive(object):
-#     # Initial variables
-#     def __init__(self):
-#         pass
-#
-#     def livePLval(self, entryPrice, currentPrice):
-#         return (currentPrice - entryPrice)
-#
-#     def livePLpercent(self, entryPrice, currentPrice):
-#         return ((currentPrice - entryPrice) / (entryPrice))
+    def livePLpercent(self, entryPrice, currentPrice):
+        """
+        Inputs:
+         - entryPrice (float) - user entered, price at which entered
+         - currentPrice (float) - current price off the asset
+        Output:
+         - livePLpercent (float) - calculates the live PL value in percent
+        """
+        return ((currentPrice - entryPrice) / (entryPrice))
 
 # # OTHER THINGS TO CALCULATE
 # # - WIN RATE
