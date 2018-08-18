@@ -1,4 +1,5 @@
 from tkinter import *
+import tkinter.ttk as ttk
 import matplotlib
 
 matplotlib.use("TkAgg")
@@ -6,97 +7,117 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolb
 from matplotlib.figure import Figure
 
 
-def on_frame_configure(canvas):
-    '''Reset the scroll region to encompass the inner frame'''
-    canvas.configure(scrollregion=canvas.bbox("all"))
+def add_func():
+    pass
 
 
-def create_dashboard(root):
+def close():
+    selected_row = tree.focus()
+    print(tree.item(selected_row))
 
-    #
-    # graph canvas
-    #
-    f = Figure(figsize=(5, 5), dpi=100)
-    a = f.add_subplot(111)
-    a.plot([1, 2, 3, 4, 5, 6, 7, 8], [5, 3, 6, 5, 2, 1, 4, 1])
 
-    graph_canvas = FigureCanvasTkAgg(f, root)
-    graph_canvas.draw()
-    graph_canvas.get_tk_widget().grid(row=0, column=0)
+root = Tk()
 
-    #
-    # "current - " frame & label
-    #
-    current_frame = Frame(root, borderwidth=1)
-    current_frame.config(highlightbackground="black")
-    current_frame.grid(row=0, column=1, sticky=N, pady=(60, 0), padx=(0, 50))
+#
+# graph canvas
+#
+f = Figure(figsize=(6, 2), dpi=100)
+a = f.add_subplot(111)
+a.plot([1, 2, 3, 4, 5, 6, 7, 8], [5, 3, 6, 5, 2, 1, 4, 1])
 
-    current_exposure = Label(current_frame, text="Current Exposure: ")
-    current_portfolio_value = Label(current_frame, text="Current Portfolio Value: ")
-    current_risk = Label(current_frame, text="Current Risk: ")
-    sharp_ratio = Label(current_frame, text="Sharp Ratio: ")
-    unrealized_pl_dollar = Label(current_frame, text="Unrealized P/L ($): ")
-    unrealized_pl_percent = Label(current_frame, text="Unrealized P/L (%): ")
+graph_canvas = FigureCanvasTkAgg(f, root)
+graph_canvas.draw()
+graph_canvas.get_tk_widget().grid(row=0, column=0)
 
-    current_exposure.grid(row=0, column=0, sticky=W)
-    current_portfolio_value.grid(row=1, column=0, sticky=W)
-    current_risk.grid(row=2, column=0, sticky=W)
-    sharp_ratio.grid(row=3, column=0, sticky=W)
-    unrealized_pl_dollar.grid(row=4, column=0, sticky=W)
-    unrealized_pl_percent.grid(row=5, column=0, sticky=W)
+#
+# "values" frame & label
+#
+values_frame = Frame(root, borderwidth=1)
+values_frame.config(highlightbackground="black")
+values_frame.grid(row=0, column=1, sticky=N, pady=(60, 0), padx=(0, 50))
 
-    exposure_value = Label(current_frame, text=0)
-    portfolio_value = Label(current_frame, text=0)
-    risk_value = Label(current_frame, text=0)
-    sharp_ratio_value = Label(current_frame, text=0)
-    upd_value = Label(current_frame, text=0)
-    upp_value = Label(current_frame, text=0)
+portfolio_exposure = Label(values_frame, text="Portfolio Exposure: ")
+avg_rrr = Label(values_frame, text="Avg. RRR: ")
+num_trades = Label(values_frame, text="No. of Trades: ")
+win_rate = Label(values_frame, text="Win Rate: ")
+avg_holding_time = Label(values_frame, text="Avg. Holding Time: ")
 
-    exposure_value.grid(row=0, column=1)
-    portfolio_value.grid(row=1, column=1)
-    risk_value.grid(row=2, column=1)
-    sharp_ratio_value.grid(row=3, column=1)
-    upd_value.grid(row=4, column=1)
-    upp_value.grid(row=5, column=1)
+portfolio_exposure.grid(row=0, column=0, sticky=W)
+avg_rrr.grid(row=1, column=0, sticky=W)
+num_trades.grid(row=2, column=0, sticky=W)
+win_rate.grid(row=3, column=0, sticky=W)
+avg_holding_time.grid(row=4, column=0, sticky=W)
 
-    # delete button
-    delete=Button(current_frame,text="Exit")
-    delete.grid(row=20,column=0,columnspan=2,pady=20,ipadx=20)
+exposure_value = Label(values_frame, text=0)
+rrr_value = Label(values_frame, text=0)
+trades_value = Label(values_frame, text=0)
+win_rate_value = Label(values_frame, text=0)
+aht_value = Label(values_frame, text=0)
 
-    #
-    # Table of values
-    #
+exposure_value.grid(row=0, column=1)
+rrr_value.grid(row=1, column=1)
+trades_value.grid(row=2, column=1)
+aht_value.grid(row=4, column=1)
 
-    canvas_frame = Frame(root)
-    canvas_frame.grid(row=1, column=0, columnspan=2, sticky=W+E)
+# delete button
+delete=Button(values_frame,text="Exit")
+delete.grid(row=20,column=0,columnspan=2,pady=20,ipadx=20)
 
-    canvas = Canvas(canvas_frame, width=830)
-    table_frame = Frame(canvas)
-    scrollbar = Scrollbar(canvas_frame, orient="vertical", command=canvas.yview)
-    canvas.configure(yscrollcommand=scrollbar.set)
+#
+# Table of values
+#
 
-    scrollbar.pack(side=RIGHT, fill="y")
-    canvas.pack(side=LEFT, fill=BOTH, expand=True)
-    canvas.create_window((0, 0), window=table_frame, anchor=NW)
+table_frame = Frame(root)
+table_frame.grid(row=1, column=0, columnspan=2, sticky=W+E)
 
-    table_frame.bind("<Configure>", lambda event, canvas=canvas: on_frame_configure(canvas))
+tree = ttk.Treeview(table_frame)
+tree["columns"] = (1, 2, 3, 4, 5, 6, 7, 8)
+tree["show"] = "headings"
+headings = ["Date", "Ticker", "Mkt Value", "Entry Price", "Current Price", "P/L ($)", "P/L (%)", "Live Risk"]
 
-    headings = ["Date", "Ticker", "Mkt Value", "Entry Price", "Current Price", "P/L ($)", "P/L (%)", "Live Risk"]
+# index start from 1
+column_index = 1
 
-    column_count = 0
+for heading in headings:
+    tree.column(column_index, width=95)
+    tree.heading(column_index, text=heading)
+    column_index += 1
 
-    for heading in headings:
-        column = Entry(table_frame, width=10, relief="groove")
-        column.insert(END, heading)
-        column.config(state="readonly")
-        column.grid(row=0, column=column_count, padx=0, pady=0)
-        column_count += 1
+tree.insert("", "end", values=("2017/5/1", "食費", 3500, "食費", 3500, "食費", 3500, "食費"))
+tree.insert("", "end", values=("2017/5/2", "食費", 3500, "食費", 3500, "食費", 3500, "食費"))
+tree.insert("", "end", values=("2017/5/3", "食費", 3500, "食費", 3500, "食費", 3500, "食費"))
+tree.insert("", "end", values=("2017/5/4", "食費", 3500, "食費", 3500, "食費", 3500, "食費"))
+tree.insert("", "end", values=("2017/5/5", "食費", 3500, "食費", 3500, "食費", 3500, "食費"))
+tree.insert("", "end", values=("2017/5/6", "食費", 3500, "食費", 3500, "食費", 3500, "食費"))
+tree.insert("", "end", values=("2017/5/7", "食費", 3500, "食費", 3500, "食費", 3500, "食費"))
+tree.insert("", "end", values=("2017/5/8", "食費", 3500, "食費", 3500, "食費", 3500, "食費"))
+tree.insert("", "end", values=("2017/5/9", "食費", 3500, "食費", 3500, "食費", 3500, "食費"))
+tree.insert("", "end", values=("2017/5/0", "食費", 3500, "食費", 3500, "食費", 3500, "食費"))
+tree.insert("", "end", values=("2017/5/1", "食費", 3500, "食費", 3500, "食費", 3500, "食費"))
+tree.insert("", "end", values=("2017/5/2", "食費", 3500, "食費", 3500, "食費", 3500, "食費"))
+tree.insert("", "end", values=("2017/5/3", "食費", 3500, "食費", 3500, "食費", 3500, "食費"))
+tree.insert("", "end", values=("2017/5/4", "食費", 3500, "食費", 3500, "食費", 3500, "食費"))
+tree.insert("", "end", values=("2017/5/5", "食費", 3500, "食費", 3500, "食費", 3500, "食費"))
+tree.insert("", "end", values=("2017/5/6", "食費", 3500, "食費", 3500, "食費", 3500, "食費"))
+tree.insert("", "end", values=("2017/5/7", "食費", 3500, "食費", 3500, "食費", 3500, "食費"))
+tree.insert("", "end", values=("2017/5/8", "食費", 3500, "食費", 3500, "食費", 3500, "食費"))
 
-    for j in range(20):
-        for i in range(len(headings)):
-            entry = Entry(table_frame, width=10, relief="groove")
-            entry.grid(row=j+1, column=i, padx=0, pady=0)
+tree.pack(side=LEFT)
 
-    # TODO: use for loop to insert values to the table from sql queries?
+button_frame = Frame(root)
+button_frame.grid(row=2, column=1)
 
+close_button = Button(button_frame, text="Close", padx=10, pady=5, command=close)
+close_button.pack(side=LEFT)
+
+add_button = Button(button_frame, text="Add", padx=10, pady=5, command=add_func)
+add_button.pack(side=LEFT)
+
+
+while True:
+    try:
+        root.mainloop()
+        break
+    except UnicodeDecodeError:
+        pass
 
