@@ -3,7 +3,6 @@ import dashboard
 import dummy
 from tkinter import messagebox
 
-
 root=Tk()
 root.wm_title("Entry Ticket")
 
@@ -44,7 +43,6 @@ optionVariable.set(Options[0])
 asset=OptionMenu(entry_frame,optionVariable,*Options)
 asset.grid(row=4,column=1,padx=10,pady=10,ipadx=15)
 # functions to get value from dropdown box
-
 
 # Qty
 qtyLabel=Label(entry_frame,text="Qty:")
@@ -194,7 +192,6 @@ def enable_calcwidget():
         print(type(targetstr))
         print(type(slstr))
         print(type(qtystr))
-
 
 # buttons
 dashboard_button= Button(root,text="Dashboard",command=new_window)

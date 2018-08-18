@@ -1,0 +1,4 @@
+venv
+db/tradingJournal.sqlite
+.idea
+__pycache__
