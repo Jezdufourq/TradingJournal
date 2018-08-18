@@ -14,9 +14,10 @@ def click_add():
         Called when "add" button is clicked.
         Opens a new window from frontend_script.py
     """
-    # TODO: open new window, pass Toplevel as parameter
-    #new_window = Toplevel(root)
-    #frontend_script.create_window(new_window)
+    # TODO: 1. In frontend_script.py, create function "create_window()" that takes a Toplevel() as a parameter.
+    # TODO: 2. In this file, implement the code below
+    # new_window = Toplevel(root)
+    # frontend_script.create_window(new_window)
 
 
 def close():
@@ -33,14 +34,12 @@ def close():
     price = tkinter.simpledialog.askinteger("Close", "Price", parent=root)
 
     # retrieve input from dialog
-    if price is not None:   # when "ok" is clicked
+    if price is not None:  # when "ok" is clicked
         print(price)
         # delete selected row
         tree.delete(selected_row)
-    else:   # when "cancel" is clicked
+    else:  # when "cancel" is clicked
         print("cancelled")
-
-    # TODO: manage entered price
 
 
 root = Tk()
@@ -88,15 +87,15 @@ trades_value.grid(row=2, column=1)
 win_rate_value.grid(row=3, column=1)
 aht_value.grid(row=4, column=1)
 
-# delete button
-delete = Button(values_frame,text="Exit")
-delete.grid(row=20,column=0,columnspan=2,pady=20,ipadx=20)
+# "Exit" button
+delete = Button(values_frame, text="Exit")
+delete.grid(row=20, column=0, columnspan=2, pady=20, ipadx=20)
 
 """
     Table of values
 """
 table_frame = Frame(root)
-table_frame.grid(row=1, column=0, columnspan=2, sticky=W+E)
+table_frame.grid(row=1, column=0, columnspan=2, sticky=W + E)
 
 tree = ttk.Treeview(table_frame)
 tree["columns"] = (1, 2, 3, 4, 5, 6, 7, 8)
@@ -142,11 +141,9 @@ close_button.pack(side=LEFT)
 add_button = Button(button_frame, text="Add", padx=10, pady=5, command=click_add)
 add_button.pack(side=LEFT)
 
-
 while True:
     try:
         root.mainloop()
         break
     except UnicodeDecodeError:
         pass
-
