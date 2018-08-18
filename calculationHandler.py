@@ -242,22 +242,22 @@ class portfolioMetric(object):
     #         pass
     #     return
 
-    def pieWeighting(self, assetClass, assetQty, entryPrice, portfolioValue):
-        """
-        Inputs:
-         - assetClass (float) - the amount of closed positions currently
-         - exitPrice (float) - the price at which the user has exited the trade
-         - entryPrice (float) - user entered, price at which entered
-         - stopLoss (float) - stopLoss (float) - user entered, maximum value to loose
-        Output:
-         - winRate (float) - The percentage of winning trades
-        """
-        assetDict = {'assetClass':, 'weighting': }
-
-        assetWeighting = assetQty * entryPrice
-        weighting = assetWeighting / portfolioValue
-
-        assetDict['assetClass'] = assetClass
-        assetDict['weighting'] = weighting
-
-        return assetDict
+    # def pieWeighting(self, assetClass, assetQty, entryPrice, portfolioValue):
+    #     """
+    #     Inputs:
+    #      - assetClass (float) - the amount of closed positions currently
+    #      - exitPrice (float) - the price at which the user has exited the trade
+    #      - entryPrice (float) - user entered, price at which entered
+    #      - stopLoss (float) - stopLoss (float) - user entered, maximum value to loose
+    #     Output:
+    #      - winRate (float) - The percentage of winning trades
+    #     """
+    #     assetDict = {'assetClass':, 'weighting': }
+    # 
+    #     assetWeighting = assetQty * entryPrice
+    #     weighting = assetWeighting / portfolioValue
+    #
+    #     assetDict['assetClass'] = assetClass
+    #     assetDict['weighting'] = weighting
+    #
+    #     return assetDict
