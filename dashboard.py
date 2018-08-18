@@ -47,6 +47,10 @@ root.title("Dashboard")
 
 """
     graph canvas
+    refer: 
+    1. https://www.youtube.com/watch?v=JQ7QP5rPvjU
+    2. https://pythonprogramming.net/how-to-embed-matplotlib-graph-tkinter-gui/
+    
 """
 f = Figure(figsize=(6, 2), dpi=100)
 a = f.add_subplot(111)
@@ -88,8 +92,10 @@ win_rate_value.grid(row=3, column=1)
 aht_value.grid(row=4, column=1)
 
 # "Exit" button
+# TODO: Confirm if this button is still necessary or not.
 delete = Button(values_frame, text="Exit")
 delete.grid(row=20, column=0, columnspan=2, pady=20, ipadx=20)
+
 
 """
     Table of values
