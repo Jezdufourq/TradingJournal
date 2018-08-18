@@ -1,11 +1,14 @@
 from tkinter import *
 import dashboard
-import dummy
+# import dummy
 from tkinter import messagebox
+from calculationHandler import entryCalculation
 
 
 root=Tk()
 root.wm_title("Entry Ticket")
+calculator= entryCalculation()
+
 
 # entry frame
 entry_frame=LabelFrame(root,text="Please enter the values:")
@@ -38,7 +41,7 @@ stopLoss_input.grid(row=3,column=1,padx=10,pady=10)
 # Asset dropdown box
 assetlabel=Label(entry_frame,text="Asset:")
 assetlabel.grid(row=4,column=0,padx=10,pady=10)
-Options=["one","two","three"]
+Options=["1","2","3","4","5","6","7","8","9","10"]
 optionVariable=StringVar()
 optionVariable.set(Options[0])
 asset=OptionMenu(entry_frame,optionVariable,*Options)
@@ -182,14 +185,17 @@ def enable_calcwidget():
         targetstr=float(targetPrice.get())
         slstr=float(stopLoss.get())
         qtystr=float(qty.get())
+        assetstr=float(optionVariable.get())
 
     except ValueError:
         messagebox.showinfo("Error", "Please enter a float/integer")
     else:
         for child in calculation_frame.winfo_children():
             child.configure(state="normal")
-        margin_input.delete(0, END)
-        margin_input.insert(0,dummy.sum(entryPrice.get()))
+        Rrr_input.delete(0, END)
+        Rrr_input.insert(0,calculator.calcRRR(entrystr,targetstr,slstr))
+        margin_input.delete(0,END)
+        margin_input.insert(0,calculator.calcMargin())
         print(type(entrystr))
         print(type(targetstr))
         print(type(slstr))
