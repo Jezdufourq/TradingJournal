@@ -56,8 +56,7 @@ ds = Datastore(conf['dbpath'])
 req = api('https://api-fxpractice.oanda.com', conf['apikey'])
 
 # Check age of last instruments update and pull initial data from OANDA
-#if (time.time() - ceil(float(conf['lastInstrumentUpdate']))) > floor(float(conf['maxInstrumentRefreshInterval'])):
-if True:
+if (time.time() - ceil(float(conf['lastInstrumentUpdate']))) > floor(float(conf['maxInstrumentRefreshInterval'])):
     updateTime = time.time()
     inst_data = req.get_all_pricing()
     for key in inst_data:

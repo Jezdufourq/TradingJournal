@@ -112,6 +112,3 @@ class api:
         #Change to raising an exception later
             print('Error')
         return resp.json()
-
-    #instrument_data = get_instrument_data()
-    #get_all_pricing()
