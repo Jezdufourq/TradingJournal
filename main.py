@@ -62,7 +62,7 @@ if (time.time() - ceil(float(conf['lastInstrumentUpdate']))) > ceil(float(conf['
 
 
 # Tkinter Setup etc..
-
+import frontend_script
 
 # Main Loop
 

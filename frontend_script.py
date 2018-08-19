@@ -4,6 +4,7 @@ import dashboard
 import tkinter.ttk as ttk
 from tkinter import messagebox
 from calculationHandler import entryCalculation
+from db.DAO import Datastore
 
 root=Tk()
 root.wm_title("Entry Ticket")
@@ -11,10 +12,11 @@ calculator= entryCalculation()
 
 # asset frame
 asset_frame=LabelFrame(root,text="Instruments:")
-asset_frame.grid(row=0,column=0,columnspan=4)
-# # label
-# example=Label(asset_frame,text="example")
-# example.grid(row=0,column=0)
+asset_frame.grid(row=0,column=0,columnspan=4,rowspan=9,padx=5,pady=10)
+
+def get_instrument():
+    selected_row=tree.focus()
+    print(tree.item(selected_row)['values'][0])
 
 tree= ttk.Treeview(asset_frame)
 tree["columns"]=(1,2,3,4)
@@ -28,23 +30,27 @@ for heading in headings:
     tree.heading(column_index,text=heading)
     column_index+=1
 
+# populateTree=Datastore.instance.getInstruments()
+populatetree= Datastore.instance
+list=populatetree.getInstruments()
+print(list)
+for data in list:
+    print(data)
+    tree.insert("","end",values=(data['code'],data['bid'],data['spread'],data['currentPrice']))
 
+# tree.insert("", "end", values=("Blah blah1",100, 3500,32))
+# tree.insert("", "end", values=("Blah blah2",101, 3500,35))
+# tree.insert("", "end", values=("Blah blah3",102, 3500,20))
+# tree.insert("", "end", values=("Blah blah4",103, 3500,31))
+# tree.insert("", "end", values=("Blah blah5",104, 3500,37))
+# tree.insert("", "end", values=("Blah blah6",105, 3500,39))
+# tree.insert("", "end", values=("Blah blah7",106, 3500,30))
 
-tree.insert("", "end", values=("Blah blah",100, 3500,32))
-tree.insert("", "end", values=("Blah blah",101, 3500,35))
-tree.insert("", "end", values=("Blah blah",102, 3500,20))
-tree.insert("", "end", values=("Blah blah",103, 3500,31))
-tree.insert("", "end", values=("Blah blah",104, 3500,37))
-tree.insert("", "end", values=("Blah blah",105, 3500,39))
-tree.insert("", "end", values=("Blah blah",106, 3500,30))
-
-tree.grid(row=0,column=0,columnspan=3)
+tree.grid(row=0,column=0,columnspan=3,rowspan=5,padx=10,pady=10,ipady=10)
 
 # TODO list: grabbing the value from the dictionary and displaying it in console log
 # TODO list: populate the treeviw with a list of dictionaries sample
-# TODO list: take the value of the table selected and display it 
-
-
+# TODO list: take the value of the table selected and display it
 
 # entry frame
 entry_frame=LabelFrame(root,text="Please enter the values:")
@@ -61,7 +67,6 @@ entryLabel_input.grid(row=1,column=5,padx=10,pady=10)
 # target price
 targetPriceLabel=Label(entry_frame,text="Target Price:")
 targetPriceLabel.grid(row=2,column=4,padx=10,pady=10)
-
 targetPrice=StringVar()
 targetLabel_input=Entry(entry_frame,textvariable=targetPrice)
 targetLabel_input.grid(row=2,column=5,padx=10,pady=10)
@@ -69,20 +74,9 @@ targetLabel_input.grid(row=2,column=5,padx=10,pady=10)
 # stop loss
 stopLossLabel=Label(entry_frame,text="S/L:")
 stopLossLabel.grid(row=3,column=4,padx=10,pady=10)
-
 stopLoss=StringVar()
 stopLoss_input=Entry(entry_frame,textvariable=stopLoss)
 stopLoss_input.grid(row=3,column=5,padx=10,pady=10)
-
-# Asset dropdown box
-# assetlabel=Label(entry_frame,text="Asset:")
-# assetlabel.grid(row=4,column=0,padx=10,pady=10)
-# Options=["1","2","3","4","5","6","7","8","9","10"]
-# optionVariable=StringVar()
-# optionVariable.set(Options[0])
-# asset=OptionMenu(entry_frame,optionVariable,*Options)
-# asset.grid(row=4,column=1,padx=10,pady=10,ipadx=15)
-# functions to get value from dropdown box
 
 # Qty
 qtyLabel=Label(entry_frame,text="Qty:")
@@ -122,8 +116,6 @@ marginRate_input=Entry(calculation_frame,textvariable=marginRate)
 marginRate_input.grid(row=0,column=8,padx=10,pady=10)
 marginRate_input.configure(state="disable")
 
-
-
 # margin entry
 marginLabel= Label(calculation_frame,text="Margin:")
 marginLabel.grid(row=1,column=7,padx=10,pady=10)
@@ -131,34 +123,6 @@ margin=StringVar()
 margin_input=Entry(calculation_frame,textvariable=margin)
 margin_input.grid(row=1,column=8,padx=10,pady=10)
 margin_input.configure(state="disable")
-
-
-# current price entry
-# currentLabel=Label(calculation_frame,text="Current Price:")
-# currentLabel.grid(row=3,column=3,padx=10,pady=10)
-# current=StringVar()
-# current_input=Entry(calculation_frame,textvariable=current)
-# current_input.grid(row=3,column=4,padx=10,pady=10)
-# current_input.configure(state="disable")
-
-
-# Account value entry
-# accountLabel=Label(calculation_frame,text="Account Value:")
-# accountLabel.grid(row=4,column=3,padx=10,pady=10)
-# account=StringVar()
-# account_input=Entry(calculation_frame,textvariable=account)
-# account_input.grid(row=4,column=4,padx=10,pady=10)
-# account_input.configure(state="disable")
-
-
-# spread entry
-# spreadLabel=Label(calculation_frame,text="Spread:")
-# spreadLabel.grid(row=5,column=3,padx=10,pady=10)
-# spread=StringVar()
-# spread_input=Entry(calculation_frame,textvariable=spread)
-# spread_input.grid(row=5,column=4,padx=10,pady=10)
-# spread_input.configure(state="disable")
-
 
 #R.R.R risk reward ration
 RrrLabel=Label(calculation_frame,text="R.R Ratio:")
@@ -263,6 +227,7 @@ def enable_calcwidget():
         qty_input.delete(0,END)
 
         add_button.configure(state="normal")
+        get_instrument()
 
 def destroy_window():
     root.destroy()
@@ -291,4 +256,3 @@ while True:
         break
     except UnicodeDecodeError:
         pass
-
