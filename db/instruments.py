@@ -1,5 +1,5 @@
 import time
-from db import DAO
+import db.DAO
 
 
 class Instrument:

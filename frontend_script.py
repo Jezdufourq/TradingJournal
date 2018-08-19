@@ -4,6 +4,7 @@ import dashboard
 import tkinter.ttk as ttk
 from tkinter import messagebox
 from calculationHandler import entryCalculation
+from db.DAO import Datastore
 
 root=Tk()
 root.wm_title("Entry Ticket")
@@ -12,9 +13,10 @@ calculator= entryCalculation()
 # asset frame
 asset_frame=LabelFrame(root,text="Instruments:")
 asset_frame.grid(row=0,column=0,columnspan=4)
-# # label
-# example=Label(asset_frame,text="example")
-# example.grid(row=0,column=0)
+
+def get_instrument():
+    selected_row=tree.focus()
+    print(tree.item(selected_row)['values'][0])
 
 tree= ttk.Treeview(asset_frame)
 tree["columns"]=(1,2,3,4)
@@ -30,13 +32,13 @@ for heading in headings:
 
 
 
-tree.insert("", "end", values=("Blah blah",100, 3500,32))
-tree.insert("", "end", values=("Blah blah",101, 3500,35))
-tree.insert("", "end", values=("Blah blah",102, 3500,20))
-tree.insert("", "end", values=("Blah blah",103, 3500,31))
-tree.insert("", "end", values=("Blah blah",104, 3500,37))
-tree.insert("", "end", values=("Blah blah",105, 3500,39))
-tree.insert("", "end", values=("Blah blah",106, 3500,30))
+tree.insert("", "end", values=("Blah blah1",100, 3500,32))
+tree.insert("", "end", values=("Blah blah2",101, 3500,35))
+tree.insert("", "end", values=("Blah blah3",102, 3500,20))
+tree.insert("", "end", values=("Blah blah4",103, 3500,31))
+tree.insert("", "end", values=("Blah blah5",104, 3500,37))
+tree.insert("", "end", values=("Blah blah6",105, 3500,39))
+tree.insert("", "end", values=("Blah blah7",106, 3500,30))
 
 tree.grid(row=0,column=0,columnspan=3)
 
@@ -263,6 +265,7 @@ def enable_calcwidget():
         qty_input.delete(0,END)
 
         add_button.configure(state="normal")
+        get_instrument()
 
 def destroy_window():
     root.destroy()
