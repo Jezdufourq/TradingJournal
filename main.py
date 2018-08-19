@@ -60,7 +60,6 @@ if (time.time() - ceil(float(conf['lastInstrumentUpdate']))) > ceil(float(conf['
     updatePersistentInstrumentTime(updateTime)
     # reload instrumnets.
 
-
 # Tkinter Setup etc..
 import frontend_script
 
