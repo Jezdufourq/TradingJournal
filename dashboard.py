@@ -82,6 +82,17 @@ class DashboardGUI(Page):
             column_index += 1
 
         # Updating the open position table
+        self.reloadAssets()
+
+        self.button_frame = Frame(self)
+        self.button_frame.grid(row=2, column=1)
+        self.close_button = Button(self.button_frame, text="Exit", padx=10, pady=5, command=self.close)
+        self.close_button.pack(side=LEFT)
+
+        self.add_button = Button(self.button_frame, text="Add", padx=10, pady=5, command=self.click_add)
+        self.add_button.pack(side=LEFT)
+
+    def reloadAssets(self):
         populatetree = Datastore.instance
         list = populatetree.getOpenAssets()
 
@@ -99,14 +110,6 @@ class DashboardGUI(Page):
                 inst.currentPrice, plVal, plPercent))
 
         self.tree.pack(side=LEFT)
-        self.button_frame = Frame(self)
-        self.button_frame.grid(row=2, column=1)
-        self.close_button = Button(self.button_frame, text="Exit", padx=10, pady=5, command=self.close)
-        self.close_button.pack(side=LEFT)
-
-        self.add_button = Button(self.button_frame, text="Add", padx=10, pady=5, command=self.click_add)
-        self.add_button.pack(side=LEFT)
-
 
     def initPieChart(self):
             """

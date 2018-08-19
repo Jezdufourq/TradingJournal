@@ -72,7 +72,7 @@ if (time.time() - ceil(float(conf['lastInstrumentUpdate']))) > floor(float(conf[
 root = tk.Tk()
 main = MainView(root)
 main.pack(side="top", fill="both", expand=True)
-root.wm_geometry("2000x786")
+root.wm_geometry("1500x786")
 root.mainloop()
 
 # Main Loop
