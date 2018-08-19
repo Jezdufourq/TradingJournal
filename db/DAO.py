@@ -24,6 +24,8 @@ class Datastore:
                     currentPrice   REAL,
                     bid            REAL,
                     spread         REAL,
+                    type           TEXT,
+                    marginRate     REAL,
                     lastUpdate     INTEGER    
                 )
             ''')
@@ -62,8 +64,10 @@ class Datastore:
             if data is None:
                 print("Creating new instrument: ", instrument.code)
                 cursor.execute('''
-                        INSERT INTO instruments(code, currentPrice, bid, spread, lastUpdate)
-                        VALUES (?,?,?,?,?)''', (instrument.code, instrument.currentPrice, instrument.bid, instrument.spread, instrument.lastUpdate))
+                        INSERT INTO instruments(code, currentPrice, bid, spread, type, marginRate, lastUpdate)
+                        VALUES (?,?,?,?,?,?,?)''', (instrument.code, instrument.currentPrice, instrument.bid,
+                                                    instrument.spread, instrument.type, instrument.marginRate,
+                                                    instrument.lastUpdate))
                 returnCode = cursor.lastrowid
             else:
                 print("Updating existing instrument: ", instrument.code)
@@ -76,8 +80,13 @@ class Datastore:
                             currentPrice =?, 
                             lastUpdate =? ,
                             bid =?,
-                            spread = ?
-                            WHERE code =? ''', (instrument.currentPrice, instrument.lastUpdate, instrument.bid, instrument.spread, instrument.code)
+                            spread = ?,
+                            type = ?,
+                            marginRate = ?,
+                            lastUpdate = ?
+                            WHERE code =? ''', (instrument.currentPrice, instrument.lastUpdate, instrument.bid,
+                                                instrument.spread, instrument.type, instrument.marginRate,
+                                                instrument.lastUpdate, instrument.code)
                                    )
                     returnCode = cursor.lastrowid
             self.db.commit()
@@ -94,7 +103,7 @@ class Datastore:
             cursor.execute('''SELECT * FROM instruments WHERE code=?''', (instrumentCode,))
             data = cursor.fetchone()
             if data is not None:
-                inst = Instrument(data[0], data[1], data[2], False)
+                inst = Instrument(data[0], data[1], data[2], data[3], data[4], data[5], data[6], False)
                 cursor.close()
                 return inst
             else:
@@ -110,8 +119,8 @@ class Datastore:
             cursor = self.db.cursor()
             cursor.execute('''SELECT * FROM instruments''')
             data = []
-            for asset in cursor.fetchall():
-                data.append(dict(asset))
+            for inst in cursor.fetchall():
+                data.append(dict(inst))
             if len(data) < 1:
                 return None
             return data

@@ -5,13 +5,14 @@ from db.instruments import Instrument, Asset
 import sqlite3
 import api.make_requests as req
 import os
+from math import ceil
 
-# Init Database
+# Init conf defaults
 conf = {
-    'dbpath' : '',
-    'apikey' : '',
+    'dbpath' : 'db/tradingJournal.sqlite',
+    'apikey' : '8f46dc882fe2a2500612be3e94abb7d6-fbe8d2e0d101bad62069e441852444c4',
     'apiAccNumber' : '',
-    'lastInstrumentUpdate' : '',
+    'lastInstrumentUpdate' : '0',
     'maxInstrumentRefreshInterval' : '0'
 }
 
@@ -42,14 +43,24 @@ else:
     with open('config.ini', 'w') as f:
         config.write(f)
 
+def updatePersistentInstrumentTime(lastUpdateTime):
+    config = ConfigParser()
+    config.read('config.ini')
+    config.set('instruments', 'lastUpdate', str(updateTime))
+    with open('config.ini', 'w') as f:
+        config.write(f)
+
 ds = Datastore(conf['dbpath'])
 # Check age of last instruments update
 
-if (time.time() - int(conf['lastInstrumentUpdate'])) > int(conf['maxInstrumentRefreshInterval']):
+
+
+if (time.time() - ceil(float(conf['lastInstrumentUpdate']))) > ceil(float(conf['maxInstrumentRefreshInterval'])):
     updateTime = time.time()
     inst_data = req.get_all_pricing()
     for key in inst_data:
-        Instrument(key, inst_data[key]['ask_price'], inst_data[key]['bid_price'], inst_data[key]['spread'], updateTime)
+        Instrument(key, inst_data[key]['ask_price'], inst_data[key]['bid_price'], inst_data[key]['spread'], None, None, updateTime)
+    updatePersistentInstrumentTime(updateTime)
     # reload instrumnets.
 
 # Pull initial data from OANDA
