@@ -1,5 +1,5 @@
-from DAO import Datastore
-from instruments import Instrument, Asset
+from db.DAO import Datastore
+from db.instruments import Instrument, Asset
 import time
 
 dbpath = 'tradingJournal.sqlite'
