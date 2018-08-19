@@ -203,7 +203,11 @@ class portfolioMetric(object):
 
     # TO DO - IMPLEMENTATION
     def averageRRR(self, closedCount, entryPrice, stopLoss, targetPrice):
-        riskReward = abs((targetPrice - entryPrice)/(stopLoss - entryPrice))
+        try:
+            abs((targetPrice - entryPrice) / (stopLoss - entryPrice))
+            return abs((targetPrice - entryPrice)/(stopLoss - entryPrice))
+        except ZeroDivisionError:
+            print("Divide by zero, reenter your positions")
 
 
     def numberTrades(self, closedCount):
