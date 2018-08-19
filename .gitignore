@@ -1,4 +1,6 @@
 venv
 db/tradingJournal.sqlite
+tradingJournal.sqlite
 .idea
 __pycache__
+config.ini
