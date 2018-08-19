@@ -212,6 +212,13 @@ def enable_calcwidget():
         add_button.configure(state="normal")
         get_instrument()
 
+        instru=get_instrument()
+        # rate=Instrument(instru).marginRate
+        # marginRate="23"
+        tool="hello"
+        marginRate_input.insert(0,tool)
+
+
 def destroy_window():
     root.destroy()
 
@@ -220,9 +227,8 @@ def get_instrument():
         selected_row=tree.focus()
         return tree.item(selected_row)['values'][0]
     except IndexError:
-
         messagebox.showerror("ERROR", "Please select an Instrument")
-        pass
+
 
 def add_button():
     # Defining variables to store the data
@@ -252,7 +258,7 @@ def add_button():
                       "marginRate":marginRateVar
                       })
 
-
+    # print(instrumentVar)
     # Deleting from the window
     margin_input.delete(0, END)
     marketVal_input.delete(0,END)
