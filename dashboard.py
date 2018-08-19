@@ -137,10 +137,10 @@ short = 0
 long = 0
 
 for data in list:
-    if (data['stopLoss']> data['entryPrice']):
+    if (data['stopLossPrice']> data['entryPrice']):
     # This is a short position
         short += 1
-    elif(data['stopLoss']< data['entryPrice']):
+    elif(data['stopLossPrice']< data['entryPrice']):
         # This is a long position
         long += 1
     else:

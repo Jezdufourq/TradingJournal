@@ -2,7 +2,7 @@ from db.DAO import Datastore
 from db.instruments import Instrument, Asset
 import time
 
-dbpath = 'tradingJournal.sqlite'
+dbpath = 'db/tradingJournal.sqlite'
 
 
 ds = Datastore(dbpath)
@@ -31,6 +31,32 @@ secondAsset = Asset({
                     "stopLossPrice"  : "2",
                     "qty": 300 })
 
+thirdAsset = Asset({
+                    "assetId"        : 3,
+                    "instrumentCode" : "USD_CAD",
+                    "entryDate"      : 4321,
+                    "entryPrice"     : 5.68,
+                    "targetPrice"    : 9,
+                    "stopLossPrice"  : "2",
+                    "qty": 300 })
+
+fourthAsset = Asset({
+                    "assetId"        : 4,
+                    "instrumentCode" : "XAU_JPY",
+                    "entryDate"      : 4321,
+                    "entryPrice"     : 5.68,
+                    "targetPrice"    : 9,
+                    "stopLossPrice"  : "2",
+                    "qty": 300 })
+
+fifthAsset = Asset({
+                    "assetId"        : 5,
+                    "instrumentCode" : "HK33_HKD",
+                    "entryDate"      : 4321,
+                    "entryPrice"     : 5.68,
+                    "targetPrice"    : 9,
+                    "stopLossPrice"  : "2",
+                    "qty": 300 })
 
 firstAsset.exitPrice = 755
 firstAsset.saveToDatabase()
@@ -43,10 +69,12 @@ asst = ds.getAsset(assetId)
 asst.exitDate = time.time()
 asst.saveToDatabase()
 
-print(asst.assetId, asst.instrumentCode)
+#print(asst.assetId, asst.instrumentCode)
 #print(ds.deleteAsset(asst.assetId))
 asst.exitDate = 9999
 asst.saveToDatabase()
+
+'''
 
 print("CLOSED Assets")
 for theAsset in ds.getClosedAssets():
@@ -62,6 +90,6 @@ for theAsset in ds.getAssets():
 
 for theInstrument in ds.getInstruments():
     print(theInstrument)
-
+'''
 
 ds.closeDatastore()
