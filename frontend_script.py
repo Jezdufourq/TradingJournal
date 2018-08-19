@@ -5,6 +5,8 @@ import tkinter.ttk as ttk
 from tkinter import messagebox
 from calculationHandler import entryCalculation
 from db.DAO import Datastore
+from db.instruments import Asset,Instrument
+import time
 
 root=Tk()
 root.wm_title("Entry Ticket")
@@ -219,7 +221,8 @@ def destroy_window():
 
 def get_instrument():
     selected_row=tree.focus()
-    print(tree.item(selected_row)['values'][0])
+    return tree.item(selected_row)['values'][0]
+    # print(tree.item(selected_row)['values'][0])
 
 def add_button():
     # Defining variables to store the data
@@ -229,9 +232,9 @@ def add_button():
     targetPriceVar = targetLabel_input.get()
     stopLossVar = stopLoss_input.get()
     qtyVar = qty_input.get()
-    technicalInputVar = technical_input.get()
-    fundamentalInputVar = fundamental_input.get()
-    commentInputVar = comment_input.get()
+    technicalInputVar = technical_input.get("1.0",END)
+    fundamentalInputVar = fundamental_input.get("1.0",END)
+    commentInputVar = comment_input.get("1.0",END)
     marginRateVar = marginRate_input.get()
 
     # Adding to the database
@@ -246,20 +249,21 @@ def add_button():
                       "commons":commentInputVar,
                       "marginRate":marginRateVar
                       })
+    print(newAsset)
 
     # Deleting from the window
     entryLabel_input.delete(0, END)
     targetLabel_input.delete(0, END)
     stopLoss_input.delete(0, END)
     qty_input.delete(0, END)
-    technical_input.delete(0, END)
-    fundamental_input.delete(0, END)
-    comment_input.delete(0, END)
+    technical_input.delete(1.0, END)
+    fundamental_input.delete(1.0, END)
+    comment_input.delete(1.0, END)
     marginRate_input.delete(0, END)
 
 
 # buttons
-add_button= Button(root,text="Add")
+add_button= Button(root,text="Add",command=add_button)
 add_button.grid(row=5,column=6,ipadx=75,padx=5,pady=5,columnspan=2)
 add_button.configure(state="disable")
 
