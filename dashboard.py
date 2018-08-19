@@ -177,9 +177,9 @@ close_button.pack(side=LEFT)
 add_button = Button(button_frame, text="Add", padx=10, pady=5, command=click_add)
 add_button.pack(side=LEFT)
 
-while True:
-    try:
-        root.mainloop()
-        break
-    except UnicodeDecodeError:
-        pass
+# while True:
+#     try:
+#         root.mainloop()
+#         break
+#     except UnicodeDecodeError:
+#         pass
