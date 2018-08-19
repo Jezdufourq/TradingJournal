@@ -42,17 +42,29 @@ def close():
     else:  # when "cancel" is clicked
         print("cancelled")
 
-def get_asset_distribution(labels):
+def get_asset_distribution():
     db = Datastore.instance
     open_assets = db.getOpenAssets()
 
-    num_types = len(labels)
-    sizes = [0] * num_types
+    labels = []
+    sizes = []
 
     for asset in open_assets:
-        print(asset)
+        code = asset['instrumentCode']
+        instrument = db.getInstrument(code)
+        
+        found = False
 
-    return sizes
+        for i in range(len(labels)):
+            if labels[i] == instrument.type:
+                found = True
+                sizes[i] = sizes[i] + 1
+
+        if not found:
+            labels.append(instrument.type)
+            sizes.append(1)
+
+    return (labels, sizes)
 
 root = Tk()
 root.title("Dashboard")
@@ -67,9 +79,9 @@ root.title("Dashboard")
 f = Figure(figsize=(6, 2), dpi=100)
 a = f.add_subplot(111)
 #a.plot([1, 2, 3, 4, 5, 6, 7, 8], [5, 3, 6, 5, 2, 1, 4, 1])
-labels = ['METAL', 'CURRENCY', 'CFD']
-sizes = get_asset_distribution(labels)
-sizes = [1,3,5]
+
+labels, sizes = get_asset_distribution()
+
 a.pie(sizes, labels = labels)
 a.axis('equal')
 
