@@ -45,7 +45,6 @@ asst.saveToDatabase()
 
 print(asst.assetId, asst.instrumentCode)
 #print(ds.deleteAsset(asst.assetId))
-
 asst.exitDate = 9999
 asst.saveToDatabase()
 
