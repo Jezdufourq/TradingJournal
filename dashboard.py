@@ -127,10 +127,32 @@ trades_value.grid(row=2, column=1)
 win_rate_value.grid(row=3, column=1)
 aht_value.grid(row=4, column=1)
 
-# "Exit" button
-# TODO: Confirm if this button is still necessary or not.
-# delete = Button(values_frame, text="Exit")
-# delete.grid(row=20, column=0, columnspan=2, pady=20, ipadx=20)
+"""
+    Calculating the portfolio
+"""
+portfolio = Datastore.instance
+list = portfolio.getClosedAssets()
+
+short = 0
+long = 0
+
+for data in list:
+    if (data['stopLoss']> data['entryPrice']):
+    # This is a short position
+        short += 1
+    elif(data['stopLoss']< data['entryPrice']):
+        # This is a long position
+        long += 1
+    else:
+        pass
+
+portfolioExp = long - short
+portfolio_exposure['text'] = portfolioExp
+short = 0
+long = 0
+
+
+
 
 """
     Table of values
