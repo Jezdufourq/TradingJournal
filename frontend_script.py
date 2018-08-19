@@ -208,10 +208,6 @@ def enable_calcwidget():
         tpercentVal_input.delete(0,END)
         tpercentVal_input.insert(0,calculator.targetPercent(entrystr,targetstr,qtystr))
 
-        entryLabel_input.delete(0,END)
-        targetLabel_input.delete(0,END)
-        stopLoss_input.delete(0,END)
-        qty_input.delete(0,END)
 
         add_button.configure(state="normal")
         get_instrument()
@@ -220,22 +216,28 @@ def destroy_window():
     root.destroy()
 
 def get_instrument():
-    selected_row=tree.focus()
-    return tree.item(selected_row)['values'][0]
-    # print(tree.item(selected_row)['values'][0])
+    try:
+        selected_row=tree.focus()
+        return tree.item(selected_row)['values'][0]
+    except IndexError:
+
+        messagebox.showerror("ERROR", "Please select an Instrument")
+        pass
 
 def add_button():
     # Defining variables to store the data
     instrumentVar = get_instrument()
     entryDate = time.time()
-    entryPriceVar = entryLabel_input.get()
-    targetPriceVar = targetLabel_input.get()
-    stopLossVar = stopLoss_input.get()
-    qtyVar = qty_input.get()
+    # entrystr = entryPrice.get()
+    entryPriceVar =entryPrice.get()
+    targetPriceVar = targetPrice.get()
+    stopLossVar = stopLoss.get()
+    qtyVar = qty.get()
     technicalInputVar = technical_input.get("1.0",END)
     fundamentalInputVar = fundamental_input.get("1.0",END)
     commentInputVar = comment_input.get("1.0",END)
-    marginRateVar = marginRate_input.get()
+    marginRateVar = marginRate.get()
+    # print(type(entrystr))
 
     # Adding to the database
     newAsset = Asset({"instrumentCode":instrumentVar,
@@ -249,9 +251,17 @@ def add_button():
                       "commons":commentInputVar,
                       "marginRate":marginRateVar
                       })
-    print(newAsset)
+
 
     # Deleting from the window
+    margin_input.delete(0, END)
+    marketVal_input.delete(0,END)
+    targetVal_input.delete(0,END)
+    percentVal_input.delete(0,END)
+    stoplossVal_input.delete(0,END)
+    tpercentVal_input.delete(0,END)
+    marginRate_input.delete(0, END)
+    Rrr_input.delete(0,END)
     entryLabel_input.delete(0, END)
     targetLabel_input.delete(0, END)
     stopLoss_input.delete(0, END)
@@ -259,7 +269,7 @@ def add_button():
     technical_input.delete(1.0, END)
     fundamental_input.delete(1.0, END)
     comment_input.delete(1.0, END)
-    marginRate_input.delete(0, END)
+
 
 
 # buttons
