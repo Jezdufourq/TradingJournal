@@ -110,8 +110,8 @@ aht_value.grid(row=4, column=1)
 
 # "Exit" button
 # TODO: Confirm if this button is still necessary or not.
-delete = Button(values_frame, text="Exit")
-delete.grid(row=20, column=0, columnspan=2, pady=20, ipadx=20)
+# delete = Button(values_frame, text="Exit")
+# delete.grid(row=20, column=0, columnspan=2, pady=20, ipadx=20)
 
 
 """
@@ -158,7 +158,7 @@ tree.pack(side=LEFT)
 button_frame = Frame(root)
 button_frame.grid(row=2, column=1)
 
-close_button = Button(button_frame, text="Close", padx=10, pady=5, command=close)
+close_button = Button(button_frame, text="Exit", padx=10, pady=5, command=close)
 close_button.pack(side=LEFT)
 
 add_button = Button(button_frame, text="Add", padx=10, pady=5, command=click_add)

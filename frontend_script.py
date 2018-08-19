@@ -5,6 +5,8 @@ import tkinter.ttk as ttk
 from tkinter import messagebox
 from calculationHandler import entryCalculation
 from db.DAO import Datastore
+from db.instruments import Asset,Instrument
+import time
 
 root=Tk()
 root.wm_title("Entry Ticket")
@@ -124,7 +126,7 @@ margin_input=Entry(calculation_frame,textvariable=margin)
 margin_input.grid(row=1,column=8,padx=10,pady=10)
 margin_input.configure(state="disable")
 
-#R.R.R risk reward ration
+#R.R.R risk reward ratio
 RrrLabel=Label(calculation_frame,text="R.R Ratio:")
 RrrLabel.grid(row=2,column=7,padx=10,pady=10)
 Rrr_input=Entry(calculation_frame,textvariable=Rrr)
@@ -204,33 +206,42 @@ def enable_calcwidget():
         tpercentVal_input.delete(0,END)
         tpercentVal_input.insert(0,calculator.targetPercent(entrystr,targetstr,qtystr))
 
-        entryLabel_input.delete(0,END)
-        targetLabel_input.delete(0,END)
-        stopLoss_input.delete(0,END)
-        qty_input.delete(0,END)
 
         add_button.configure(state="normal")
         get_instrument()
+
+        instru=get_instrument()
+        # rate=Instrument(instru).marginRate
+        # marginRate="23"
+        tool="hello"
+        marginRate_input.insert(0,tool)
+
 
 def destroy_window():
     root.destroy()
 
 def get_instrument():
-    selected_row=tree.focus()
-    print(tree.item(selected_row)['values'][0])
+    try:
+        selected_row=tree.focus()
+        return tree.item(selected_row)['values'][0]
+    except IndexError:
+        messagebox.showerror("ERROR", "Please select an Instrument")
+
 
 def add_button():
     # Defining variables to store the data
     instrumentVar = get_instrument()
     entryDate = time.time()
-    entryPriceVar = entryLabel_input.get()
-    targetPriceVar = targetLabel_input.get()
-    stopLossVar = stopLoss_input.get()
-    qtyVar = qty_input.get()
-    technicalInputVar = technical_input.get()
-    fundamentalInputVar = fundamental_input.get()
-    commentInputVar = comment_input.get()
-    marginRateVar = marginRate_input.get()
+    # entrystr = entryPrice.get()
+    entryPriceVar =entryPrice.get()
+    targetPriceVar = targetPrice.get()
+    stopLossVar = stopLoss.get()
+    qtyVar = qty.get()
+    technicalInputVar = technical_input.get("1.0",END)
+    fundamentalInputVar = fundamental_input.get("1.0",END)
+    commentInputVar = comment_input.get("1.0",END)
+    marginRateVar = marginRate.get()
+    # print(type(entrystr))
 
     # Adding to the database
     newAsset = Asset({"instrumentCode":instrumentVar,
@@ -245,19 +256,28 @@ def add_button():
                       "marginRate":marginRateVar
                       })
 
+    # print(instrumentVar)
     # Deleting from the window
+    margin_input.delete(0, END)
+    marketVal_input.delete(0,END)
+    targetVal_input.delete(0,END)
+    percentVal_input.delete(0,END)
+    stoplossVal_input.delete(0,END)
+    tpercentVal_input.delete(0,END)
+    marginRate_input.delete(0, END)
+    Rrr_input.delete(0,END)
     entryLabel_input.delete(0, END)
     targetLabel_input.delete(0, END)
     stopLoss_input.delete(0, END)
     qty_input.delete(0, END)
-    technical_input.delete(0, END)
-    fundamental_input.delete(0, END)
-    comment_input.delete(0, END)
-    marginRate_input.delete(0, END)
+    technical_input.delete(1.0, END)
+    fundamental_input.delete(1.0, END)
+    comment_input.delete(1.0, END)
+
 
 
 # buttons
-add_button= Button(root,text="Add")
+add_button= Button(root,text="Add",command=add_button)
 add_button.grid(row=5,column=6,ipadx=75,padx=5,pady=5,columnspan=2)
 add_button.configure(state="disable")
 

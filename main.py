@@ -1,12 +1,14 @@
 from db.DAO import Datastore
 from configparser import ConfigParser
 import time
+import sys
 from db.instruments import Instrument, Asset
 import sqlite3
-import api.make_requests as req
+from api.make_requests import api
 import os
-from math import ceil
+from math import ceil, floor
 
+print(sys.path)
 # Init conf defaults
 conf = {
     'dbpath' : 'db/tradingJournal.sqlite',
@@ -51,12 +53,21 @@ def updatePersistentInstrumentTime(lastUpdateTime):
         config.write(f)
 
 ds = Datastore(conf['dbpath'])
+req = api('https://api-fxpractice.oanda.com', conf['apikey'])
+
 # Check age of last instruments update and pull initial data from OANDA
-if (time.time() - ceil(float(conf['lastInstrumentUpdate']))) > ceil(float(conf['maxInstrumentRefreshInterval'])):
+if (time.time() - ceil(float(conf['lastInstrumentUpdate']))) > floor(float(conf['maxInstrumentRefreshInterval'])):
     updateTime = time.time()
     inst_data = req.get_all_pricing()
     for key in inst_data:
-        Instrument(key, inst_data[key]['ask_price'], inst_data[key]['bid_price'], inst_data[key]['spread'], None, None, updateTime)
+        inst = Instrument(key,
+                          inst_data[key]['ask_price'],
+                          inst_data[key]['bid_price'],
+                          inst_data[key]['spread'],
+                          inst_data[key]['type'],
+                          inst_data[key]['marginRate'],
+                          updateTime,
+                          True)
     updatePersistentInstrumentTime(updateTime)
     # reload instrumnets.
 

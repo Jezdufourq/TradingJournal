@@ -53,6 +53,7 @@ class Asset:
     exitPrice     = None
 
     def __init__(self, assetParams, saveOnCreate=True):
+        # print("Hello")
         # check for default values and build object.
         assetParams = dict(assetParams)
         if "assetId" in assetParams:
