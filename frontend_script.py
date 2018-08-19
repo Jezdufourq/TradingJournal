@@ -208,10 +208,14 @@ def enable_calcwidget():
         tpercentVal_input.delete(0,END)
         tpercentVal_input.insert(0,calculator.targetPercent(entrystr,targetstr,qtystr))
 
+
         entryLabel_input.delete(0,END)
         targetLabel_input.delete(0,END)
         stopLoss_input.delete(0,END)
         qty_input.delete(0,END)
+        technical_input.delete(1.0, END)
+        fundamental_input.delete(1.0, END)
+        comment_input.delete(1.0, END)
 
         add_button.configure(state="normal")
         get_instrument()
@@ -220,9 +224,13 @@ def destroy_window():
     root.destroy()
 
 def get_instrument():
-    selected_row=tree.focus()
-    return tree.item(selected_row)['values'][0]
-    # print(tree.item(selected_row)['values'][0])
+    try:
+        selected_row=tree.focus()
+        return tree.item(selected_row)['values'][0]
+    except IndexError:
+
+        messagebox.showerror("ERROR", "Please select an Instrument")
+        pass
 
 def add_button():
     # Defining variables to store the data
@@ -249,7 +257,6 @@ def add_button():
                       "commons":commentInputVar,
                       "marginRate":marginRateVar
                       })
-    print(newAsset)
 
     # Deleting from the window
     entryLabel_input.delete(0, END)
