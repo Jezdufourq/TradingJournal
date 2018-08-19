@@ -4,8 +4,10 @@ import tkinter.simpledialog
 import matplotlib
 import frontend_script
 from db.DAO import Datastore
+
 from db.instruments import Asset,Instrument
 from calculationHandler import entryCalculation, portfolioMetric
+
 matplotlib.use("TkAgg")
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
 from matplotlib.figure import Figure
@@ -154,15 +156,18 @@ populatetree = Datastore.instance
 list = populatetree.getOpenAssets()
 
 for data in list:
-    inst = Datastore.instance.getInstrument(data['instrumentCode'])
-    # Calculating the parameters
-    mktValue = calculator.calcMarketval(data['entryPrice'], data['qty'])
-    plVal = calculator.livePLval(data['entryPrice'], inst.currentPrice)
-    plPercent = calculator.livePLpercent(data['entryPrice'], inst.currentPrice)
+    if (data['qty'] is None):
+        pass
+    else:
+        inst = Datastore.instance.getInstrument(data['instrumentCode'])
+        # Calculating the parameters
+        mktValue = calculator.calcMarketval(data['entryPrice'], data['qty'])
+        plVal = calculator.livePLval(data['entryPrice'], inst.currentPrice)
+        plPercent = calculator.livePLpercent(data['entryPrice'], inst.currentPrice)
 
-    ts = int(data['entryDate'])
-    tree.insert("","end",values=(datetime.utcfromtimestamp(ts).strftime('%Y-%m-%d %H:%M'),data['instrumentCode'], mktValue, data['entryPrice'],
-                                 inst.currentPrice,plVal, plPercent))
+        ts = int(data['entryDate'])
+        tree.insert("","end",values=(datetime.utcfromtimestamp(ts).strftime('%Y-%m-%d %H:%M'),data['instrumentCode'], mktValue, data['entryPrice'],
+                                     inst.currentPrice,plVal, plPercent))
 
 tree.pack(side=LEFT)
 button_frame = Frame(root)
