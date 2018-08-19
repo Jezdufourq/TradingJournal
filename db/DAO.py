@@ -247,7 +247,7 @@ class Datastore:
             :return:
             """
             cursor = self.db.cursor()
-            cursor.execute('''SELECT * FROM assets WHERE exitDate = 0''')
+            cursor.execute('''SELECT * FROM assets WHERE exitDate IS NULL OR exitDate = 0''')
             openAssets = []
             for asset in cursor.fetchall():
                 openAssets.append(dict(asset))
