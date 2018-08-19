@@ -1,12 +1,8 @@
-from db.DAO import Datastore
 from configparser import ConfigParser
-import time
-import sys
-from db.instruments import Instrument, Asset
-import sqlite3
 from api.make_requests import api
 import os
 from math import ceil, floor
+from frontend_script import *
 
 print(sys.path)
 # Init conf defaults
@@ -72,7 +68,12 @@ if (time.time() - ceil(float(conf['lastInstrumentUpdate']))) > floor(float(conf[
     # reload instrumnets.
 
 # Tkinter Setup etc..
-import frontend_script
+
+root = tk.Tk()
+main = MainView(root)
+main.pack(side="top", fill="both", expand=True)
+root.wm_geometry("2000x786")
+root.mainloop()
 
 # Main Loop
 

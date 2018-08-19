@@ -28,6 +28,8 @@ class entryCalculation(object):
              - calcRRR (int) - Calculated Risk Reward Value
         """
         try:
+            if (stopLoss - entryPrice) == 0:
+                return 0
             return abs((targetPrice - entryPrice)/(stopLoss - entryPrice))
         except ZeroDivisionError as error:
             # Output expected ZeroDivisionErrors.
