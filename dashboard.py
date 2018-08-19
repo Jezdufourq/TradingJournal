@@ -3,6 +3,7 @@ import tkinter.ttk as ttk
 import tkinter.simpledialog
 import matplotlib
 import frontend_script
+from db.DAO import Datastore
 
 matplotlib.use("TkAgg")
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
@@ -41,6 +42,17 @@ def close():
     else:  # when "cancel" is clicked
         print("cancelled")
 
+def get_asset_distribution(labels):
+    db = Datastore.instance
+    open_assets = db.getOpenAssets()
+
+    num_types = len(labels)
+    sizes = [0] * num_types
+
+    for asset in open_assets:
+        print(asset)
+
+    return sizes
 
 root = Tk()
 root.title("Dashboard")
@@ -54,7 +66,12 @@ root.title("Dashboard")
 """
 f = Figure(figsize=(6, 2), dpi=100)
 a = f.add_subplot(111)
-a.plot([1, 2, 3, 4, 5, 6, 7, 8], [5, 3, 6, 5, 2, 1, 4, 1])
+#a.plot([1, 2, 3, 4, 5, 6, 7, 8], [5, 3, 6, 5, 2, 1, 4, 1])
+labels = ['METAL', 'CURRENCY', 'CFD']
+sizes = get_asset_distribution(labels)
+sizes = [1,3,5]
+a.pie(sizes, labels = labels)
+a.axis('equal')
 
 graph_canvas = FigureCanvasTkAgg(f, root)
 graph_canvas.draw()

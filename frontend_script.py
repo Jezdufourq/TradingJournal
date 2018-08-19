@@ -29,9 +29,7 @@ for heading in headings:
 # populateTree=Datastore.instance.getInstruments()
 populatetree= Datastore.instance
 list=populatetree.getInstruments()
-print(list)
 for data in list:
-    print(data)
     tree.insert("","end",values=(data['code'],data['bid'],data['spread'],data['currentPrice']))
 
 
