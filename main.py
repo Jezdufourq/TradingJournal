@@ -61,8 +61,14 @@ if True:
     updateTime = time.time()
     inst_data = req.get_all_pricing()
     for key in inst_data:
-        inst = Instrument(key, inst_data[key]['ask_price'], inst_data[key]['bid_price'], inst_data[key]['spread'], None, None, updateTime, True)
-
+        inst = Instrument(key,
+                          inst_data[key]['ask_price'],
+                          inst_data[key]['bid_price'],
+                          inst_data[key]['spread'],
+                          inst_data[key]['type'],
+                          inst_data[key]['marginRate'],
+                          updateTime,
+                          True)
     updatePersistentInstrumentTime(updateTime)
     # reload instrumnets.
 

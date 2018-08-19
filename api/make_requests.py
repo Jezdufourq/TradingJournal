@@ -97,7 +97,12 @@ class api:
             bid_price = instrument['closeoutBid']
             ask_price = instrument['closeoutAsk']
             spread = round(float(ask_price) - float(bid_price), 5)
-            result[instrument['instrument']] = {'bid_price': bid_price, 'ask_price': ask_price, 'spread': spread}
+            key = instrument['instrument']
+            result[key] = {'bid_price': bid_price,
+                           'ask_price': ask_price,
+                           'spread': spread,
+                           'marginRate': self.instrument_data[key]['margin_rate'],
+                           'type': self.instrument_data[key]['type']}
 
         return result
 
