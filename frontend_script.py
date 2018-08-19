@@ -128,7 +128,7 @@ margin_input=Entry(calculation_frame,textvariable=margin)
 margin_input.grid(row=1,column=8,padx=10,pady=10)
 margin_input.configure(state="disable")
 
-#R.R.R risk reward ration
+#R.R.R risk reward ratio
 RrrLabel=Label(calculation_frame,text="R.R Ratio:")
 RrrLabel.grid(row=2,column=7,padx=10,pady=10)
 Rrr_input=Entry(calculation_frame,textvariable=Rrr)

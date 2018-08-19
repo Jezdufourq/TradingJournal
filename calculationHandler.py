@@ -138,13 +138,11 @@ class entryCalculation(object):
         Output:
          - closeValue (float) - market value of the closing position
         """
-        if (positionStatus):
+        if(positionStatus):
             return((currentPrice - entryPrice) * assetQty) / (assetQty * entryPrice)
         else:
             return((entryPrice - currentPrice) * assetQty) / (assetQty * entryPrice)
-pass
 
-class assetLive(object):
     def livePLval(self, entryPrice, currentPrice):
         """
         Inputs:
@@ -164,6 +162,7 @@ class assetLive(object):
          - livePLpercent (float) - calculates the live PL value in percent
         """
         return ((currentPrice - entryPrice) / (entryPrice))
+
 
 class portfolioMetric(object):
     """
