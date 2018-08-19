@@ -12,7 +12,7 @@ calculator= entryCalculation()
 
 # asset frame
 asset_frame=LabelFrame(root,text="Instruments:")
-asset_frame.grid(row=0,column=0,columnspan=4)
+asset_frame.grid(row=0,column=0,columnspan=4,rowspan=9,padx=5,pady=10)
 
 def get_instrument():
     selected_row=tree.focus()
@@ -30,17 +30,23 @@ for heading in headings:
     tree.heading(column_index,text=heading)
     column_index+=1
 
+# populateTree=Datastore.instance.getInstruments()
+populatetree= Datastore.instance
+list=populatetree.getInstruments()
+print(list)
+for data in list:
+    print(data)
+    tree.insert("","end",values=(data['code'],data['bid'],data['spread'],data['currentPrice']))
 
+# tree.insert("", "end", values=("Blah blah1",100, 3500,32))
+# tree.insert("", "end", values=("Blah blah2",101, 3500,35))
+# tree.insert("", "end", values=("Blah blah3",102, 3500,20))
+# tree.insert("", "end", values=("Blah blah4",103, 3500,31))
+# tree.insert("", "end", values=("Blah blah5",104, 3500,37))
+# tree.insert("", "end", values=("Blah blah6",105, 3500,39))
+# tree.insert("", "end", values=("Blah blah7",106, 3500,30))
 
-tree.insert("", "end", values=("Blah blah1",100, 3500,32))
-tree.insert("", "end", values=("Blah blah2",101, 3500,35))
-tree.insert("", "end", values=("Blah blah3",102, 3500,20))
-tree.insert("", "end", values=("Blah blah4",103, 3500,31))
-tree.insert("", "end", values=("Blah blah5",104, 3500,37))
-tree.insert("", "end", values=("Blah blah6",105, 3500,39))
-tree.insert("", "end", values=("Blah blah7",106, 3500,30))
-
-tree.grid(row=0,column=0,columnspan=3)
+tree.grid(row=0,column=0,columnspan=3,rowspan=5,padx=10,pady=10,ipady=10)
 
 # TODO list: grabbing the value from the dictionary and displaying it in console log
 # TODO list: populate the treeviw with a list of dictionaries sample
