@@ -46,9 +46,10 @@ ds = Datastore(conf['dbpath'])
 # Check age of last instruments update
 
 if (time.time() - int(conf['lastInstrumentUpdate'])) > int(conf['maxInstrumentRefreshInterval']):
-    inst_data = req.get_instrument_data()
+    updateTime = time.time()
+    inst_data = req.get_all_pricing()
     for key in inst_data:
-        Instrument(key)
+        Instrument(key, inst_data[key]['ask_price'], inst_data[key]['bid_price'], inst_data[key]['spread'], updateTime)
     # reload instrumnets.
 
 # Pull initial data from OANDA
