@@ -3,11 +3,21 @@ import tkinter.ttk as ttk
 import tkinter.simpledialog
 import matplotlib
 import frontend_script
+from db.DAO import Datastore
+<<<<<<< HEAD
 
+=======
+from db.instruments import Asset,Instrument
+from calculationHandler import entryCalculation, portfolioMetric
+>>>>>>> 00619e1ddc25abff9b032d007ca635fb872aa0b8
 matplotlib.use("TkAgg")
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
 from matplotlib.figure import Figure
+from datetime import datetime
 
+
+# Initilizing the classes
+calculator = entryCalculation()
 
 def click_add():
     """
@@ -41,6 +51,29 @@ def close():
     else:  # when "cancel" is clicked
         print("cancelled")
 
+def get_asset_distribution():
+    db = Datastore.instance
+    open_assets = db.getOpenAssets()
+
+    labels = []
+    sizes = []
+
+    for asset in open_assets:
+        code = asset['instrumentCode']
+        instrument = db.getInstrument(code)
+        
+        found = False
+
+        for i in range(len(labels)):
+            if labels[i] == instrument.type:
+                found = True
+                sizes[i] = sizes[i] + 1
+
+        if not found:
+            labels.append(instrument.type)
+            sizes.append(1)
+
+    return (labels, sizes)
 
 root = Tk()
 root.title("Dashboard")
@@ -54,7 +87,12 @@ root.title("Dashboard")
 """
 f = Figure(figsize=(6, 2), dpi=100)
 a = f.add_subplot(111)
-a.plot([1, 2, 3, 4, 5, 6, 7, 8], [5, 3, 6, 5, 2, 1, 4, 1])
+#a.plot([1, 2, 3, 4, 5, 6, 7, 8], [5, 3, 6, 5, 2, 1, 4, 1])
+
+labels, sizes = get_asset_distribution()
+
+a.pie(sizes, labels = labels)
+a.axis('equal')
 
 graph_canvas = FigureCanvasTkAgg(f, root)
 graph_canvas.draw()
@@ -96,7 +134,6 @@ aht_value.grid(row=4, column=1)
 # delete = Button(values_frame, text="Exit")
 # delete.grid(row=20, column=0, columnspan=2, pady=20, ipadx=20)
 
-
 """
     Table of values
 """
@@ -116,31 +153,24 @@ for heading in headings:
     tree.heading(column_index, text=heading)
     column_index += 1
 
-# placeholder values
-tree.insert("", "end", values=("2017/5/1", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
-tree.insert("", "end", values=("2017/5/2", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
-tree.insert("", "end", values=("2017/5/3", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
-tree.insert("", "end", values=("2017/5/4", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
-tree.insert("", "end", values=("2017/5/5", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
-tree.insert("", "end", values=("2017/5/6", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
-tree.insert("", "end", values=("2017/5/7", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
-tree.insert("", "end", values=("2017/5/8", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
-tree.insert("", "end", values=("2017/5/9", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
-tree.insert("", "end", values=("2017/5/0", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
-tree.insert("", "end", values=("2017/5/1", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
-tree.insert("", "end", values=("2017/5/2", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
-tree.insert("", "end", values=("2017/5/3", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
-tree.insert("", "end", values=("2017/5/4", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
-tree.insert("", "end", values=("2017/5/5", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
-tree.insert("", "end", values=("2017/5/6", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
-tree.insert("", "end", values=("2017/5/7", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
-tree.insert("", "end", values=("2017/5/8", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
+# Updating the open position table
+populatetree = Datastore.instance
+list = populatetree.getOpenAssets()
+
+for data in list:
+    inst = Datastore.instance.getInstrument(data['instrumentCode'])
+    # Calculating the parameters
+    mktValue = calculator.calcMarketval(data['entryPrice'], data['qty'])
+    plVal = calculator.livePLval(data['entryPrice'], inst.currentPrice)
+    plPercent = calculator.livePLpercent(data['entryPrice'], inst.currentPrice)
+
+    ts = int(data['entryDate'])
+    tree.insert("","end",values=(datetime.utcfromtimestamp(ts).strftime('%Y-%m-%d %H:%M'),data['instrumentCode'], mktValue, data['entryPrice'],
+                                 inst.currentPrice,plVal, plPercent))
 
 tree.pack(side=LEFT)
-
 button_frame = Frame(root)
 button_frame.grid(row=2, column=1)
-
 close_button = Button(button_frame, text="Exit", padx=10, pady=5, command=close)
 close_button.pack(side=LEFT)
 
