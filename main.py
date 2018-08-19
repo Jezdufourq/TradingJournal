@@ -51,10 +51,7 @@ def updatePersistentInstrumentTime(lastUpdateTime):
         config.write(f)
 
 ds = Datastore(conf['dbpath'])
-# Check age of last instruments update
-
-
-
+# Check age of last instruments update and pull initial data from OANDA
 if (time.time() - ceil(float(conf['lastInstrumentUpdate']))) > ceil(float(conf['maxInstrumentRefreshInterval'])):
     updateTime = time.time()
     inst_data = req.get_all_pricing()
@@ -63,12 +60,9 @@ if (time.time() - ceil(float(conf['lastInstrumentUpdate']))) > ceil(float(conf['
     updatePersistentInstrumentTime(updateTime)
     # reload instrumnets.
 
-# Pull initial data from OANDA
-
-
 
 # Tkinter Setup etc..
-
+import frontend_script
 
 # Main Loop
 

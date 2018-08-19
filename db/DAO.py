@@ -194,9 +194,6 @@ class Datastore:
             cursor.close()
             return id
 
-
-
-
         def getAsset(self, assetId):
             """
             Gets asset from sqlite database. Will return none if assetId not found.
@@ -231,6 +228,30 @@ class Datastore:
             finally:
                 cursor.close()
                 return success
+
+        def getAssets(self):
+            """
+            Gets all assets from database;
+            :return:
+            """
+            cursor = self.db.cursor()
+            cursor.execute('''SELECT * FROM assets''')
+            assets = []
+            for asset in cursor.fetchall():
+                assets.append(dict(asset))
+            return assets
+
+        def getOpenAssets(self):
+            """
+            Gets all currently open assets from database;
+            :return:
+            """
+            cursor = self.db.cursor()
+            cursor.execute('''SELECT * FROM assets WHERE exitDate IS NULL OR exitDate = 0''')
+            openAssets = []
+            for asset in cursor.fetchall():
+                openAssets.append(dict(asset))
+            return openAssets
 
         def getClosedAssets(self):
             """

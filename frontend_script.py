@@ -5,16 +5,14 @@ import tkinter.ttk as ttk
 from tkinter import messagebox
 from calculationHandler import entryCalculation
 from db.DAO import Datastore
-from db.instruments import Instrument, Asset
 
-# Creating the window
 root=Tk()
 root.wm_title("Entry Ticket")
 calculator= entryCalculation()
 
 # asset frame
 asset_frame=LabelFrame(root,text="Instruments:")
-asset_frame.grid(row=0,column=0,columnspan=4)
+asset_frame.grid(row=0,column=0,columnspan=4,rowspan=9,padx=5,pady=10)
 
 tree= ttk.Treeview(asset_frame)
 tree["columns"]=(1,2,3,4)
@@ -28,15 +26,16 @@ for heading in headings:
     tree.heading(column_index,text=heading)
     column_index+=1
 
-# Inserting the data into the table
-tree.insert("", "end", values=("Blah blah1",100, 3500,32))
-tree.insert("", "end", values=("Blah blah2",101, 3500,35))
-tree.insert("", "end", values=("Blah blah3",102, 3500,20))
-tree.insert("", "end", values=("Blah blah4",103, 3500,31))
-tree.insert("", "end", values=("Blah blah5",104, 3500,37))
-tree.insert("", "end", values=("Blah blah6",105, 3500,39))
-tree.insert("", "end", values=("Blah blah7",106, 3500,30))
-tree.grid(row=0,column=0,columnspan=3)
+# populateTree=Datastore.instance.getInstruments()
+populatetree= Datastore.instance
+list=populatetree.getInstruments()
+print(list)
+for data in list:
+    print(data)
+    tree.insert("","end",values=(data['code'],data['bid'],data['spread'],data['currentPrice']))
+
+
+tree.grid(row=0,column=0,columnspan=3,rowspan=5,padx=10,pady=10,ipady=10)
 
 # Input variables
 instrumentCode = StringVar()
@@ -169,6 +168,7 @@ percentVal_input.grid(row=5,column=10,ipadx=5,padx=5)
 stoplossVal_input.configure(state="disable")
 percentVal_input.configure(state="disable")
 
+
 # enabling frame
 def enable_calcwidget():
     #testing
@@ -257,8 +257,9 @@ def add_button():
     comment_input.delete(0, END)
     marginRate_input.delete(0, END)
 
+
 # buttons
-add_button= Button(root,text="Add", command = add_button)
+add_button= Button(root,text="Add")
 add_button.grid(row=5,column=6,ipadx=75,padx=5,pady=5,columnspan=2)
 add_button.configure(state="disable")
 
