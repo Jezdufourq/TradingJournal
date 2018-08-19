@@ -52,6 +52,8 @@ class AddAssetGUI(Page):
 
         self.tree.grid(row=0,column=0,columnspan=3,rowspan=5,padx=10,pady=10,ipady=10)
 
+        self.tree.bind("<ButtonRelease-1>", self.onInstSelect)
+
         # Input variables
         self.instrumentCode = StringVar()
         self.entryDate = StringVar()
@@ -81,10 +83,10 @@ class AddAssetGUI(Page):
         self.entry_frame.grid(row=0,column=4,rowspan=9,columnspan=2,ipady=20,padx=10)
 
         # entry label
-        self.entryLabel= Label(self.entry_frame,text="Entry Price:")
-        self.entryLabel.grid(row=1,column=4,padx=10,pady=10)
-        self.entryLabel_input=Entry(self.entry_frame,textvariable=self.entryPrice)
-        self.entryLabel_input.grid(row=1,column=5,padx=10,pady=10)
+        self.entryLabel= Label(self.entry_frame, text="Entry Price:")
+        self.entryLabel.grid(row=1, column=4, padx=10, pady=10)
+        self.entryLabel_input=Entry(self.entry_frame, textvariable=self.entryPrice, state='disabled')
+        self.entryLabel_input.grid(row=1, column=5, padx=10,pady=10)
 
         # target price
         self.targetPriceLabel=Label(self.entry_frame,text="Target Price:")
@@ -245,6 +247,11 @@ class AddAssetGUI(Page):
 
     def destroy_window(self):
         self.destroy()
+
+    def onInstSelect(self, *args):
+        selected_row = self.tree.focus()
+        self.entryPrice.set(self.tree.item(selected_row)['values'][3])
+
 
     def get_instrument(self):
         try:
