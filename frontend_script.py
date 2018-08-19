@@ -212,11 +212,10 @@ def enable_calcwidget():
         add_button.configure(state="normal")
         get_instrument()
 
-        instru=get_instrument()
-        # rate=Instrument(instru).marginRate
-        # marginRate="23"
-        tool="hello"
-        marginRate_input.insert(0,tool)
+        instru=Datastore.instance.getInstrument(get_instrument())
+        rate=instru.marginRate
+        print(rate)
+        marginRate_input.insert(0,rate)
 
 
 def destroy_window():
