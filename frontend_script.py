@@ -263,50 +263,46 @@ class AddAssetGUI(Page):
 
     def add_button_click(self):
         # Defining variables to store the data
-        self.instrumentVar = self.get_instrument()
-        self.entryDate = time.time()
+        instrumentVar = self.get_instrument()
+        entryDate = time.time()
         # entrystr = entryPrice.get()
-        self.entryPriceVar  = self.entryPrice.get()
-        self.targetPriceVar = self.targetPrice.get()
-        self.stopLossVar    = self.stopLoss.get()
-        self.qtyVar         = self.qty.get()
-        self.technicalInputVar   = self.technical_input.get("1.0",END)
-        self.fundamentalInputVar = self.fundamental_input.get("1.0",END)
-        self.commentInputVar = self.comment_input.get("1.0",END)
-        self.marginRateVar   = self.marginRate.get()
+        entryPriceVar  = self.entryPrice.get()
+        targetPriceVar = self.targetPrice.get()
+        stopLossVar    = self.stopLoss.get()
+        qtyVar         = self.qty.get()
+        technicalInputVar   = self.technical_input.get("1.0",END)
+        fundamentalInputVar = self.fundamental_input.get("1.0",END)
+        commentInputVar = self.comment_input.get("1.0",END)
+        marginRateVar   = self.marginRate.get()
         # print(type(entrystr))
 
         # Adding to the database
-        newAsset = Asset({"instrumentCode":self.instrumentVar,
-                          "entryDate":self.entryDate,
-                          "entryPrice":self.entryPriceVar,
-                          "targetPrice":self.targetPriceVar,
-                          "stopLossPrice":self.stopLossVar,
-                          "qty":self.qtyVar,
-                          "technicals":self.technicalInputVar,
-                          "fundamentals":self.fundamentalInputVar,
-                          "commons":self.commentInputVar,
-                          "marginRate":self.marginRateVar
-                          })
+        Asset({"instrumentCode":instrumentVar,
+               "entryDate":entryDate,
+               "entryPrice":entryPriceVar,
+               "targetPrice":targetPriceVar,
+               "stopLossPrice":stopLossVar,
+               "qty":qtyVar,
+               "technicals":technicalInputVar,
+               "fundamentals":fundamentalInputVar,
+               "commons":commentInputVar,
+               "marginRate":marginRateVar
+               })
+        self.resetAddForm()
 
-        # print(instrumentVar)
-        # Deleting from the window
-        # self.margin_input.delete(0, END)
-        # self.marketVal_input.delete(0,END)
-        # self.targetVal_input.delete(0,END)
-        # self.percentVal_input.delete(0,END)
-        # self.stoplossVal_input.delete(0,END)
-        # self.tpercentVal_input.delete(0,END)
-        # self.marginRate_input.delete(0, END)
-        # self.Rrr_input.delete(0,END)
-        # self.entryLabel_input.delete(0, END)
-        # self.targetLabel_input.delete(0, END)
-        # self.stopLoss_input.delete(0, END)
-        # self.qty_input.delete(0, END)
-        # self.technical_input.delete(1.0, END)
-        # self.fundamental_input.delete(1.0, END)
-        # self.comment_input.delete(1.0, END)
-        #super(MainView, self).displayDash()
+    def resetAddForm(self):
+        self.targetPrice.set('')
+        self.stopLoss.set('')
+        self.qty.set('')
+        self.marginRate.set('')
+
+        self.margin.set('')
+        self.Rrr.set('')
+        self.marketVal.set('')
+        self.targetVal.set('')
+        self.tpercentVal.set('')
+        self.stoplossVal.set('')
+        self.percentVal.set('')
 
 
 
@@ -383,8 +379,8 @@ class DashboardGUI(Page):
         self.close_button = Button(self.button_frame, text="Exit", padx=10, pady=5, command=self.close)
         self.close_button.pack(side=LEFT)
 
-        self.add_button = Button(self.button_frame, text="Add", padx=10, pady=5, command=self.click_add)
-        self.add_button.pack(side=LEFT)
+        # self.add_button = Button(self.button_frame, text="Add", padx=10, pady=5, command=self.click_add)
+        # self.add_button.pack(side=LEFT)
 
     def reloadAssets(self):
         for i in self.tree.get_children():
