@@ -161,7 +161,7 @@ class entryCalculation(object):
         Output:
          - livePLpercent (float) - calculates the live PL value in percent
         """
-        return ((currentPrice - entryPrice) / (entryPrice))
+        return ((currentPrice - entryPrice) / (entryPrice)) * 100
 
 
 class portfolioMetric(object):
