@@ -80,12 +80,19 @@ def get_instrument_type(instrument_code):
     return instrument_data[instrument_code]['type']
 
 def get_all_pricing():
-    keys = instrument_data.keys()
-    
+    endpoint_url = '/v3/accounts/' + account_id + '/pricing'
+
+    query_data = {'instruments': ','.join(instrument_data.keys())}
+    data = call_request(endpoint_url, header_data, query_data)
+    data = data['prices']
+
     result = {}
 
-    for instrument_code in keys:
-        result[instrument_code] = get_price_and_spread(instrument_code)
+    for instrument in data:
+        bid_price = instrument['closeoutBid']
+        ask_price = instrument['closeoutAsk']
+        spread = round(float(ask_price) - float(bid_price), 5)
+        result[instrument['instrument']] = {'bid_price': bid_price, 'ask_price': ask_price, 'spread': spread}
 
     return result
 
@@ -97,3 +104,4 @@ def call_request(endpoint_url, header_data, query_data):
     return resp.json()
 
 instrument_data = get_instrument_data()
+get_all_pricing()
