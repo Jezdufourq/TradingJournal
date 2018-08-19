@@ -1,5 +1,5 @@
 import time
-import db.DAO as DAO
+import db.DAO
 
 
 class Instrument:
@@ -34,7 +34,7 @@ class Instrument:
         self.saveToDatabase()
 
     def saveToDatabase(self):
-        DAO.Datastore.instance.updateCreateInstrument(self)
+        db.DAO.Datastore.instance.updateCreateInstrument(self)
 
 
 class Asset:
@@ -88,5 +88,5 @@ class Asset:
             self.saveToDatabase()
 
     def saveToDatabase(self):
-        DAO.Datastore.instance.updateCreateAsset(self)
+        db.DAO.Datastore.instance.updateCreateAsset(self)
 

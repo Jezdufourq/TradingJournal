@@ -34,7 +34,14 @@ asst.saveToDatabase()
 for theAsset in ds.getClosedAssets():
     print(theAsset)
 
+for theAsset in ds.getOpenAssets():
+    print(theAsset)
+
+for theAsset in ds.getAssets():
+    print(theAsset)
+
 for theInstrument in ds.getInstruments():
     print(theInstrument)
+
 
 ds.closeDatastore()
