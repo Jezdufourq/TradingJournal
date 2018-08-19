@@ -3,11 +3,16 @@ import tkinter.ttk as ttk
 import tkinter.simpledialog
 import matplotlib
 import frontend_script
-
+from db.DAO import Datastore
+from db.instruments import Asset,Instrument
+from calculationHandler import entryCalculation, portfolioMetric
 matplotlib.use("TkAgg")
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
 from matplotlib.figure import Figure
 
+
+# Initilizing the classes
+calculator = entryCalculation()
 
 def click_add():
     """
@@ -116,25 +121,42 @@ for heading in headings:
     tree.heading(column_index, text=heading)
     column_index += 1
 
-# placeholder values
-tree.insert("", "end", values=("2017/5/1", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
-tree.insert("", "end", values=("2017/5/2", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
-tree.insert("", "end", values=("2017/5/3", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
-tree.insert("", "end", values=("2017/5/4", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
-tree.insert("", "end", values=("2017/5/5", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
-tree.insert("", "end", values=("2017/5/6", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
-tree.insert("", "end", values=("2017/5/7", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
-tree.insert("", "end", values=("2017/5/8", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
-tree.insert("", "end", values=("2017/5/9", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
-tree.insert("", "end", values=("2017/5/0", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
-tree.insert("", "end", values=("2017/5/1", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
-tree.insert("", "end", values=("2017/5/2", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
-tree.insert("", "end", values=("2017/5/3", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
-tree.insert("", "end", values=("2017/5/4", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
-tree.insert("", "end", values=("2017/5/5", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
-tree.insert("", "end", values=("2017/5/6", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
-tree.insert("", "end", values=("2017/5/7", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
-tree.insert("", "end", values=("2017/5/8", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
+# Updating the open position table
+populatetree = Datastore.instance
+list = populatetree.getOpenAssets()
+# print(list)
+# list = populatetree.getAssets()
+print(list)
+# for data in list:
+#     mktValue = calculator.calcMarketval(data['entryPrice'], data['qty'])
+#     plVal = calculator.livePLval(data['entryPrice'], data['currentPrice'])
+#     plPercent = calculator.livePLpercent(data['entryPrice'], data['currentPrice'])
+#
+#     print(mktValue)
+#     print(plVal)
+#     print(plPercent)
+#
+#     tree.insert("","end",values=(data['entryDate'],data['code'], mktValue, data['entryPrice'],
+#                                  data['currentPrice'],plVal, plPercent))
+#
+# tree.insert("", "end", values=("2017/5/1", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
+# tree.insert("", "end", values=("2017/5/2", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
+# tree.insert("", "end", values=("2017/5/3", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
+# tree.insert("", "end", values=("2017/5/4", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
+# tree.insert("", "end", values=("2017/5/5", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
+# tree.insert("", "end", values=("2017/5/6", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
+# tree.insert("", "end", values=("2017/5/7", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
+# tree.insert("", "end", values=("2017/5/8", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
+# tree.insert("", "end", values=("2017/5/9", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
+# tree.insert("", "end", values=("2017/5/0", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
+# tree.insert("", "end", values=("2017/5/1", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
+# tree.insert("", "end", values=("2017/5/2", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
+# tree.insert("", "end", values=("2017/5/3", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
+# tree.insert("", "end", values=("2017/5/4", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
+# tree.insert("", "end", values=("2017/5/5", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
+# tree.insert("", "end", values=("2017/5/6", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
+# tree.insert("", "end", values=("2017/5/7", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
+# tree.insert("", "end", values=("2017/5/8", "blah", 3500, "blah", 3500, "blah", 3500, "blah"))
 
 tree.pack(side=LEFT)
 
