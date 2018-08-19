@@ -4,12 +4,8 @@ import tkinter.simpledialog
 import matplotlib
 import frontend_script
 from db.DAO import Datastore
-<<<<<<< HEAD
-
-=======
 from db.instruments import Asset,Instrument
 from calculationHandler import entryCalculation, portfolioMetric
->>>>>>> 00619e1ddc25abff9b032d007ca635fb872aa0b8
 matplotlib.use("TkAgg")
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
 from matplotlib.figure import Figure
