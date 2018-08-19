@@ -1,6 +1,5 @@
 from tkinter import *
 import dashboard
-# import dummy
 import tkinter.ttk as ttk
 from tkinter import messagebox
 from calculationHandler import entryCalculation
