@@ -7,11 +7,11 @@ class Datastore:
         def __init__(self, dbpath):
             print("dbpath = ", dbpath)
             if os.path.isfile(dbpath):
-                self.db = sqlite3.connect('tradingJournal.sqlite')
+                self.db = sqlite3.connect(dbpath)
                 self.db.row_factory = sqlite3.Row
                 print("Using database at path: ", dbpath)
             else:
-                self.db = sqlite3.connect('tradingJournal.sqlite')
+                self.db = sqlite3.connect(dbpath)
                 self.db.row_factory = sqlite3.Row
                 self.generateNewDatabase()
                 print("Existing database not found. Generating new one at path: ", dbpath)
@@ -22,6 +22,8 @@ class Datastore:
                 CREATE TABLE instruments(
                     code TEXT PRIMARY KEY,
                     currentPrice   REAL,
+                    bid            REAL,
+                    spread         REAL,
                     lastUpdate     INTEGER    
                 )
             ''')
@@ -60,8 +62,8 @@ class Datastore:
             if data is None:
                 print("Creating new instrument: ", instrument.code)
                 cursor.execute('''
-                        INSERT INTO instruments(code, currentPrice, lastUpdate)
-                        VALUES (?,?,?)''', (instrument.code, instrument.currentPrice, instrument.lastUpdate))
+                        INSERT INTO instruments(code, currentPrice, bid, spread, lastUpdate)
+                        VALUES (?,?,?,?,?)''', (instrument.code, instrument.currentPrice, instrument.bid, instrument.spread, instrument.lastUpdate))
                 returnCode = cursor.lastrowid
             else:
                 print("Updating existing instrument: ", instrument.code)
@@ -72,9 +74,11 @@ class Datastore:
                     cursor.execute('''
                             UPDATE instruments SET 
                             currentPrice =?, 
-                            lastUpdate =? 
-                            WHERE code =? ''', (instrument.currentPrice, instrument.lastUpdate, instrument.code,)
-                           )
+                            lastUpdate =? ,
+                            bid =?,
+                            spread = ?
+                            WHERE code =? ''', (instrument.currentPrice, instrument.lastUpdate, instrument.bid, instrument.spread, instrument.code)
+                                   )
                     returnCode = cursor.lastrowid
             self.db.commit()
             cursor.close()
@@ -97,7 +101,20 @@ class Datastore:
                 cursor.close()
                 return None
 
-
+        def getInstruments(self):
+            """
+            Gets all instruments from sqlite database. Will return none if no instruments found.
+            :param instrumentCode:
+            :return: instrument
+            """
+            cursor = self.db.cursor()
+            cursor.execute('''SELECT * FROM instruments''')
+            data = []
+            for asset in cursor.fetchall():
+                data.append(dict(asset))
+            if len(data) < 1:
+                return None
+            return data
 
         def updateCreateAsset(self, theAsset):
             """

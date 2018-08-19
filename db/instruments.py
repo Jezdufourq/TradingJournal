@@ -4,18 +4,25 @@ from db import DAO
 
 class Instrument:
     code = ""
-    currentPrice = 0.0
+    currentPrice = None #ask
+    bid = None
+    spread = None
     lastUpdate = 0
 
-    def __init__(self, instrumentCode, currentPrice=0, lastUpdate=0, saveOnCreate=True):
+
+    def __init__(self, instrumentCode, currentPrice=0, bid=0, spread=0, lastUpdate=0, saveOnCreate=True):
         self.code = instrumentCode
         self.currentPrice = currentPrice
         self.lastUpdate = lastUpdate
+        self.bid = bid
+        self.spread = spread
         if saveOnCreate:
             self.saveToDatabase()
 
-    def updatePrice(self, newPrice, updateTime=0):
-        self.currentPrice = newPrice
+    def updatePrice(self, bidSpreadAsk, updateTime=0):
+        self.currentPrice = bidSpreadAsk[2]
+        self.bid = bidSpreadAsk[0]
+        self.spread = bidSpreadAsk[1]
         if updateTime == 0:
             self.lastUpdate = time.time()
         else:
