@@ -7,15 +7,19 @@ class Instrument:
     currentPrice = None #ask
     bid = None
     spread = None
+    type = None
+    marginRate = None
     lastUpdate = 0
 
 
-    def __init__(self, instrumentCode, currentPrice=0, bid=0, spread=0, lastUpdate=0, saveOnCreate=True):
+    def __init__(self, instrumentCode, currentPrice=0, bid=0, spread=0, type=None,  marginRate=None, lastUpdate=0, saveOnCreate=True):
         self.code = instrumentCode
         self.currentPrice = currentPrice
         self.lastUpdate = lastUpdate
         self.bid = bid
         self.spread = spread
+        self.type = type
+        self.marginRate = marginRate
         if saveOnCreate:
             self.saveToDatabase()
 
