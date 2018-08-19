@@ -216,9 +216,13 @@ def destroy_window():
     root.destroy()
 
 def get_instrument():
-    selected_row=tree.focus()
-    return tree.item(selected_row)['values'][0]
-    # print(tree.item(selected_row)['values'][0])
+    try:
+        selected_row=tree.focus()
+        return tree.item(selected_row)['values'][0]
+    except IndexError:
+
+        messagebox.showerror("ERROR", "Please select an Instrument")
+        pass
 
 def add_button():
     # Defining variables to store the data
@@ -247,15 +251,6 @@ def add_button():
                       "commons":commentInputVar,
                       "marginRate":marginRateVar
                       })
-    print(newAsset)
-    print(targetPriceVar)
-    print(stopLossVar)
-    print(qtyVar)
-    print(technicalInputVar)
-    print(fundamentalInputVar)
-    print(commentInputVar)
-    print(marginRateVar)
-    print(entryPriceVar)
 
 
     # Deleting from the window
