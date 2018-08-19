@@ -4,8 +4,12 @@ import tkinter.simpledialog
 import matplotlib
 import frontend_script
 from db.DAO import Datastore
+<<<<<<< HEAD
+
+=======
 from db.instruments import Asset,Instrument
 from calculationHandler import entryCalculation, portfolioMetric
+>>>>>>> 00619e1ddc25abff9b032d007ca635fb872aa0b8
 matplotlib.use("TkAgg")
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
 from matplotlib.figure import Figure
@@ -47,6 +51,29 @@ def close():
     else:  # when "cancel" is clicked
         print("cancelled")
 
+def get_asset_distribution():
+    db = Datastore.instance
+    open_assets = db.getOpenAssets()
+
+    labels = []
+    sizes = []
+
+    for asset in open_assets:
+        code = asset['instrumentCode']
+        instrument = db.getInstrument(code)
+        
+        found = False
+
+        for i in range(len(labels)):
+            if labels[i] == instrument.type:
+                found = True
+                sizes[i] = sizes[i] + 1
+
+        if not found:
+            labels.append(instrument.type)
+            sizes.append(1)
+
+    return (labels, sizes)
 
 root = Tk()
 root.title("Dashboard")
@@ -60,7 +87,12 @@ root.title("Dashboard")
 """
 f = Figure(figsize=(6, 2), dpi=100)
 a = f.add_subplot(111)
-a.plot([1, 2, 3, 4, 5, 6, 7, 8], [5, 3, 6, 5, 2, 1, 4, 1])
+#a.plot([1, 2, 3, 4, 5, 6, 7, 8], [5, 3, 6, 5, 2, 1, 4, 1])
+
+labels, sizes = get_asset_distribution()
+
+a.pie(sizes, labels = labels)
+a.axis('equal')
 
 graph_canvas = FigureCanvasTkAgg(f, root)
 graph_canvas.draw()
